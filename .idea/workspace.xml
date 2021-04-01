@@ -66,7 +66,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617209118753</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Начальные пробы в бота">
+      <created>1617210320698</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1617210320698</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -101,6 +108,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="1" />
     <MESSAGE value="Проверка_2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Проверка_2" />
+    <MESSAGE value="Начальные пробы в бота" />
+    <option name="LAST_COMMIT_MESSAGE" value="Начальные пробы в бота" />
   </component>
 </project>

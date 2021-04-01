@@ -10,6 +10,19 @@ hello_world = ['привет', 'hi', 'Hi', 'Hello', 'hello', 'qq', 'q', 'ky', '�
 antword = ['информация', 'команды', 'help',
            'Help', 'info', 'Info', 'что делать']
 
+@client.event
+async def on_ready():
+    print('Connected')
+    await client.change_presence(status=discord.Status.online,
+                                 activity=discord.Game('Yandex.Lyceum | .help'))
+
+
+@client.command(pass_context=True)
+async def hello(ctx):
+    author = ctx.message.author
+    await ctx.send(
+        f'{author.mention}, приветствую, но не на немецком! | {author.mention}, привет! как дела?')
+
 # get token
 token = open('token.txt', 'r').readline()
 
