@@ -23,6 +23,17 @@ async def hello(ctx):
     await ctx.send(
         f'{author.mention}, приветствую, но не на немецком! | {author.mention}, привет! как дела?')
 
+# auto role
+@client.event
+async def on_member_join(member):
+    channel = client.get_channel(689176999578697755)
+    role = discord.utils.get(member.guild.roles, id=689430828089868292)
+
+    await member.add_roles(role)
+    await channel.send(
+        embed=discord.Embed(discription=f'Пользователь ''{member.name}'' присоединился к серверу!',
+                            color=0x0c0c0c))
+
 # get token
 token = open('token.txt', 'r').readline()
 
