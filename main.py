@@ -10,6 +10,7 @@ hello_world = ['привет', 'hi', 'Hi', 'Hello', 'hello', 'qq', 'q', 'ky', '�
 antword = ['информация', 'команды', 'help',
            'Help', 'info', 'Info', 'что делать']
 
+
 @client.event
 async def on_ready():
     print('Connected')
@@ -23,6 +24,7 @@ async def hello(ctx):
     await ctx.send(
         f'{author.mention}, приветствую, но не на немецком! | {author.mention}, привет! как дела?')
 
+
 # auto role
 @client.event
 async def on_member_join(member):
@@ -33,6 +35,7 @@ async def on_member_join(member):
     await channel.send(
         embed=discord.Embed(discription=f'Пользователь ''{member.name}'' присоединился к серверу!',
                             color=0x0c0c0c))
+
 
 # ban
 @client.command(pass_context=True)
@@ -51,6 +54,7 @@ async def ban(ctx, member: discord.Member, *, reason=None):
 
     await ctx.send(embed=emb)
 
+
 # kick
 @client.command(pass_context=True)
 @commands.has_permissions(administrator=True)
@@ -66,6 +70,7 @@ async def kick(ctx, member: discord.Member, *, reason=None):
     emb.set_footer(text='Был кикнут администратором{}'.format(ctx.author.name))
 
     await ctx.send(embed=emb)
+
 
 # get token
 token = open('token.txt', 'r').readline()
