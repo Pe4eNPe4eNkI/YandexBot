@@ -93,6 +93,40 @@ async def join(ctx):
         await ctx.send(f'Бот присоединился к  {channel}')
 
 
+# leave voice
+@client.command()
+async def leave(ctx):
+    channel = ctx.message.author.voice.channel
+    voice = get(client.voice_clients, guild=ctx.guild)
+
+    if voice and voice.is_connected():
+        await voice.disconnect()
+    else:
+        voice = await channel.conneсt()
+        await ctx.send(f'Бот отключился от  {channel}')
+
+
+# help
+@client.command(pass_context=True)
+@commands.has_permissions(administrator=True)
+async def help(ctx):
+    await ctx.channel.purge(limit=1)
+    emb = discord.Embed(title='Список команд:')
+
+    emb.add_field(name='{}clear'.format('.'), value='Очистка чата')
+    emb.add_field(name='{}kick'.format('.'), value='кик участника')
+    emb.add_field(name='{}ban'.format('.'), value='бан участника')
+    emb.add_field(name='{}unban'.format('.'), value='разбан участника')
+    emb.add_field(name='{}join'.format('.'),
+                  value='подключение бота к голосовому каналу')
+    emb.add_field(name='{}leave'.format('.'),
+                  value='отключение бота от голосового канала')
+    emb.add_field(name='{}hello'.format('.'), value='Приветствие')
+    emb.add_field(name='{}help'.format('.'), value='Список команд')
+
+    await ctx.send(embed=emb)
+
+
 # get token
 token = open('token.txt', 'r').readline()
 
