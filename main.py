@@ -72,6 +72,27 @@ async def kick(ctx, member: discord.Member, *, reason=None):
     await ctx.send(embed=emb)
 
 
+# clear
+@client.command(pass_context=True)
+@commands.has_permissions(administrator=True)
+async def clear(ctx, amount=100):
+    await ctx.channel.purge(limit=amount)
+
+
+# join voice
+@client.command()
+async def join(ctx):
+    global voice
+    channel = ctx.message.author.voice.channel
+    voice = get(client.voice_clients, guild=ctx.guild)
+
+    if voice and voice.is_connected():
+        await voice.move_to(channel)
+    else:
+        voice = await channel.connect()
+        await ctx.send(f'Бот присоединился к  {channel}')
+
+
 # get token
 token = open('token.txt', 'r').readline()
 
