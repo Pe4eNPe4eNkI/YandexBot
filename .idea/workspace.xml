@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e7f85aa1-102b-4fa0-88a7-d4afa3d3a6ee" name="Default Changelist" comment="">
+    <list default="true" id="e7f85aa1-102b-4fa0-88a7-d4afa3d3a6ee" name="Default Changelist" comment="autorole">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +72,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617210320698</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="autorole">
+      <created>1617293435262</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1617293435262</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -109,6 +115,7 @@
     <MESSAGE value="1" />
     <MESSAGE value="Проверка_2" />
     <MESSAGE value="Начальные пробы в бота" />
-    <option name="LAST_COMMIT_MESSAGE" value="Начальные пробы в бота" />
+    <MESSAGE value="autorole" />
+    <option name="LAST_COMMIT_MESSAGE" value="autorole" />
   </component>
 </project>

@@ -51,6 +51,22 @@ async def ban(ctx, member: discord.Member, *, reason=None):
 
     await ctx.send(embed=emb)
 
+# kick
+@client.command(pass_context=True)
+@commands.has_permissions(administrator=True)
+async def kick(ctx, member: discord.Member, *, reason=None):
+    emb = discord.Embed(title='Kick', color=discord.Color.red())
+
+    await ctx.channel.purge(limit=1)
+    await member.kick(reason=reason)
+
+    emb.set_author(name=member.name)
+    emb.add_field(name='Kick user',
+                  value='Kicked user: {}'.format(member.mention))
+    emb.set_footer(text='Был кикнут администратором{}'.format(ctx.author.name))
+
+    await ctx.send(embed=emb)
+
 # get token
 token = open('token.txt', 'r').readline()
 
