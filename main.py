@@ -100,10 +100,11 @@ async def leave(ctx):
     voice = get(client.voice_clients, guild=ctx.guild)
 
     if voice and voice.is_connected():
+        await ctx.send(f'Бот отключился от  {channel}')
         await voice.disconnect()
     else:
         voice = await channel.conneсt()
-        await ctx.send(f'Бот отключился от  {channel}')
+        await voice.disconnect()
 
 
 # help
