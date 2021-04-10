@@ -56,31 +56,6 @@ def get_currency_price(name):
     return response_letter
 
 
-def get_currency_price_translate(number_1, alpha, beta):
-    if alpha != "rub" and beta == "rub":  # Если одна из выбраных валют - рубль
-        # Нахождение актуальной информации о валюте
-        currency_now = float(get_currency_price(alpha)[0])
-        number = float(number_1.replace(",", "."))
-        answer = int(((currency_now * number)) * 1000) / 1000  # Оформление ответа
-        return answer  # Запись ответа
-
-    if alpha == "rub" and beta != "rub":  # Если одна из выбраных валют - рубль
-        currency_now = float(get_currency_price(beta)[0])
-        number = float(number_1.replace(",", "."))
-        answer = int(((number / currency_now)) * 1000) / 1000  # Оформление ответа
-        return answer  # Запись ответа
-
-    elif alpha != "rub" and beta != "rub":  # Если ни одна из валют рубль
-        # Нахождение актуальной информации о валюте
-        currency_now_left = float(get_currency_price(alpha)[0])
-        # Нахождение актуальной информации о валюте
-        currency_now_right = float(get_currency_price(beta)[0])
-        number = float(number_1.replace(",", "."))
-        rub = int(((number / currency_now_right)) * 1000000000) / 1000000000  # Перевод в рубли
-        answer = int(((currency_now_left * rub)) * 1000) / 1000  # Оформление ответа
-        return answer  # Запись ответа
-
-
 @client.event
 async def on_ready():
     print('Connected')
@@ -198,13 +173,6 @@ async def frank(ctx):
         f'Курс франка в рублях: {get_currency_price("frank")[0]}')
 
 
-# translate
-@client.command(pass_context=True)
-async def translate(ctx, number_1, alpha, beta):
-    await ctx.send(
-        f'{number_1} в {alpha} = {get_currency_price_translate(number_1, alpha, beta)} в {beta}')
-
-
 # help
 @client.command(pass_context=True)
 @commands.has_permissions(administrator=True)
@@ -226,7 +194,6 @@ async def help(ctx):
     emb.add_field(name='{}euro'.format('.'), value='Курс евро')
     emb.add_field(name='{}frank'.format('.'), value='Курс франка')
     emb.add_field(name='{}weather (city)'.format('.'), value='Прогноз погоды')
-    emb.add_field(name='{}translate (quantity, first_currency, second_currency)'.format('.'), value='Перевод одной валюты в другую')
 
     await ctx.send(embed=emb)
 
@@ -294,8 +261,9 @@ async def weather(ctx, pred_city):  # тут мы с помощью цыганс
     await ctx.send(b5)  # не бейте, пожалуйста
 
 
+
 # get token
 # token = open('token.txt', 'r').readline()
-token = "_"
+token = ""
 
 client.run(token)
