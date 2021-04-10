@@ -8,10 +8,20 @@ from bs4 import BeautifulSoup
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/86.0.4240.111 Safari/537.36'}
 
-LINKS = "https://www.google.com/search?sxsrf=ALeKk01-G5_9JcFxgjtDU7651F-Pn7Jyeg%3A1603202429242&ei" \
+LINKS_DOLLAR = "https://www.google.com/search?sxsrf=ALeKk01-G5_9JcFxgjtDU7651F-Pn7Jyeg%3A1603202429242&ei" \
         "=fe2OX7OmDu6krgS49qMw&q=%D0%BA%D1%83%D1%80%D1%81+%D0%B4%D0%BE%D0%BB%D0%BB%D0%B0%D1%80%D0%B0+%D0%BA+%D1%80%D1" \
         "%83%D0%B1%D0%BB%D1%8E&oq=%D0%BA%D1%83%D1%80%D1%81+%D0%B4%D0%BE%D0%BA+%D1%80%D1%83%D0%B1%D0%BB%D1%8E&gs_lcp" \
         "=CgZwc3ktYWIQAxgAMgYIABAHEB4yBggAEAcQHjIGCAAQBxAeMgQIABANMgYIABAHEB4yBggAEAcQHjIGCAAQBxAeMgYIABAHEB4yBggAEAcQHjIGCAAQBxAeOgQIABBHUPMZWPYbYLkoaABwA3gAgAGGAYgB9AGSAQMwLjKYAQCgAQGqAQdnd3Mtd2l6yAEIwAEB&sclient=psy-ab "
+
+LINKS_EURO = "https://www.google.com/search?sxsrf=ALeKk035VJ5f25dYB621YODHsOewYnaCLg%3A1603876654233&ei" \
+             "=LjeZX_nkDcPmrgTptq7QDg&q=%D0%B5%D0%B2%D1%80%D0%BE+%D0%BA+%D1%80%D1%83%D0%B1%D0%BB%D1%8E&oq=%D0%B5%D0" \
+             "%B2%D1%80%D0%BE+%D0%BA+%D1%80%D1%83%D0%B1%D0%BB%D1%8E&gs_lcp" \
+             "=CgZwc3ktYWIQAzIHCAAQsQMQQzIECAAQQzIECAAQQzICCAAyAggAMgIIADICCAAyAggAMgcIABAUEIcCMgIIADoHCAAQRxCwAzoGCAAQBxAeOggIABAHEAoQHjoJCAAQsQMQBxAeOgQIABAKUPT9jwFY94WQAWDoh5ABaAJwAHgAgAF-iAG9BJIBAzAuNZgBAKABAaoBB2d3cy13aXrIAQjAAQE&sclient=psy-ab&ved=0ahUKEwj5s_SR-tbsAhVDs4sKHWmbC-oQ4dUDCA0&uact=5 "
+
+LINKS_FRANK = "https://www.google.com/search?sxsrf=ALeKk01pScRniXA8RAy8HfnlTLSk0jCyAw%3A1603879015895&ei" \
+              "=Z0CZX5WbNuH3qwG0jbrwDw&q=%D1%84%D1%83%D0%BD%D1%82+%D1%81%D1%82%D0%B5%D1%80%D0%BB%D0%B8%D0%BD%D0%B3%D0" \
+              "%B0+%D0%BA+%D1%80%D1%83%D0%B1%D0%BB%D1%8E&oq=%D1%84%D1%83%D0%BD%D1%82%D0%BA+%D1%80%D1%83%D0%B1%D0%BB" \
+              "%D1%8E&gs_lcp=CgZwc3ktYWIQAxgBMgkIABCxAxAHEB4yBggAEAcQHjIGCAAQBxAeMgYIABAHEB4yBggAEAcQHjIGCAAQBxAeMgYIABAHEB4yBggAEAcQHjIGCAAQBxAeMgYIABAHEB46BwgAEEcQsANQyooBWPGQAWCkqAFoAnAAeACAAYsBiAHWA5IBAzAuNJgBAKABAaoBB2d3cy13aXrIAQjAAQE&sclient=psy-ab "
 
 client = commands.Bot(command_prefix='.')
 client.remove_command('help')
@@ -22,10 +32,20 @@ antword = ['информация', 'команды', 'help',
            'Help', 'info', 'Info', 'что делать']
 
 
-def get_currency_price():
-    response_letter = []
-    # Подключение ссылки
-    full_page = requests.get(LINKS, headers=HEADERS)
+def get_currency_price(name):
+    if name == "dollar":
+        response_letter = []
+        # Подключение ссылки
+        full_page = requests.get(LINKS_DOLLAR, headers=HEADERS)
+    elif name == "euro":
+        response_letter = []
+        # Подключение ссылки
+        full_page = requests.get(LINKS_EURO, headers=HEADERS)
+    elif name == "frank":
+        response_letter = []
+        # Подключение ссылки
+        full_page = requests.get(LINKS_FRANK, headers=HEADERS)
+
     soup = BeautifulSoup(full_page.content, 'html.parser')
     # Поиск нужной иформации в строках хода
     convert = soup.findAll("span", {"class": "DFlfde", "class": "SwHCTb", "data-precision": 2})[0].text
@@ -134,7 +154,21 @@ async def leave(ctx):
 @client.command(pass_context=True)
 async def dollar(ctx):
     await ctx.send(
-        f'Курс доллара в рублях: {get_currency_price()[0]}')
+        f'Курс доллара в рублях: {get_currency_price("dollar")[0]}')
+
+
+# euro
+@client.command(pass_context=True)
+async def euro(ctx):
+    await ctx.send(
+        f'Курс евро в рублях: {get_currency_price("euro")[0]}')
+
+
+# frank
+@client.command(pass_context=True)
+async def frank(ctx):
+    await ctx.send(
+        f'Курс франка в рублях: {get_currency_price("frank")[0]}')
 
 
 # help
@@ -155,6 +189,8 @@ async def help(ctx):
     emb.add_field(name='{}hello'.format('.'), value='Приветствие')
     emb.add_field(name='{}help'.format('.'), value='Список команд')
     emb.add_field(name='{}dollar'.format('.'), value='Курс доллара')
+    emb.add_field(name='{}euro'.format('.'), value='Курс евро')
+    emb.add_field(name='{}frank'.format('.'), value='Курс франка')
 
     await ctx.send(embed=emb)
 
