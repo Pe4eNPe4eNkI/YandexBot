@@ -102,18 +102,18 @@
       <method v="2" />
     </configuration>
     <configuration name="bot" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="YandexBot" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\Арсений\AppData\Local\Microsoft\WindowsApps\python3.8.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../bot" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Desktop/bot" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../bot/bot.py" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/Desktop/bot/bot.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -190,7 +190,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617210320698</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Небольшая поправка">
+      <created>1617364808367</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1617364808367</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -226,6 +233,7 @@
     <MESSAGE value="1" />
     <MESSAGE value="Проверка_2" />
     <MESSAGE value="Начальные пробы в бота" />
-    <option name="LAST_COMMIT_MESSAGE" value="Начальные пробы в бота" />
+    <MESSAGE value="Небольшая поправка" />
+    <option name="LAST_COMMIT_MESSAGE" value="Небольшая поправка" />
   </component>
 </project>

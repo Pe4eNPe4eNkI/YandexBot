@@ -1,6 +1,16 @@
 import discord
 from discord.ext import commands
 from discord.utils import get
+import requests
+from bs4 import BeautifulSoup
+
+HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                         'Chrome/86.0.4240.111 Safari/537.36'}
+
+LINKS = "https://www.google.com/search?sxsrf=ALeKk01-G5_9JcFxgjtDU7651F-Pn7Jyeg%3A1603202429242&ei" \
+        "=fe2OX7OmDu6krgS49qMw&q=%D0%BA%D1%83%D1%80%D1%81+%D0%B4%D0%BE%D0%BB%D0%BB%D0%B0%D1%80%D0%B0+%D0%BA+%D1%80%D1" \
+        "%83%D0%B1%D0%BB%D1%8E&oq=%D0%BA%D1%83%D1%80%D1%81+%D0%B4%D0%BE%D0%BA+%D1%80%D1%83%D0%B1%D0%BB%D1%8E&gs_lcp" \
+        "=CgZwc3ktYWIQAxgAMgYIABAHEB4yBggAEAcQHjIGCAAQBxAeMgQIABANMgYIABAHEB4yBggAEAcQHjIGCAAQBxAeMgYIABAHEB4yBggAEAcQHjIGCAAQBxAeOgQIABBHUPMZWPYbYLkoaABwA3gAgAGGAYgB9AGSAQMwLjKYAQCgAQGqAQdnd3Mtd2l6yAEIwAEB&sclient=psy-ab "
 
 client = commands.Bot(command_prefix='.')
 client.remove_command('help')
@@ -9,6 +19,18 @@ hello_world = ['привет', 'hi', 'Hi', 'Hello', 'hello', 'qq', 'q', 'ky', '�
                'Здравствуйте', 'Ку', 'здорова', 'Хеллоу', "хеллоу"]
 antword = ['информация', 'команды', 'help',
            'Help', 'info', 'Info', 'что делать']
+
+
+def get_currency_price():
+    response_letter = []
+    # Подключение ссылки
+    full_page = requests.get(LINKS, headers=HEADERS)
+    soup = BeautifulSoup(full_page.content, 'html.parser')
+    # Поиск нужной иформации в строках хода
+    convert = soup.findAll("span", {"class": "DFlfde", "class": "SwHCTb", "data-precision": 2})[0].text
+    convert = convert.replace(" ", "")
+    response_letter.append(float(convert.replace(",", ".")))
+    return response_letter
 
 
 @client.event
@@ -107,6 +129,13 @@ async def leave(ctx):
         await voice.disconnect()
 
 
+# dollar
+@client.command(pass_context=True)
+async def dollar(ctx):
+    await ctx.send(
+        f'Курс доллара в рублях: {get_currency_price()[0]}')
+
+
 # help
 @client.command(pass_context=True)
 @commands.has_permissions(administrator=True)
@@ -124,6 +153,7 @@ async def help(ctx):
                   value='отключение бота от голосового канала')
     emb.add_field(name='{}hello'.format('.'), value='Приветствие')
     emb.add_field(name='{}help'.format('.'), value='Список команд')
+    emb.add_field(name='{}dollar'.format('.'), value='Курс доллара')
 
     await ctx.send(embed=emb)
 
