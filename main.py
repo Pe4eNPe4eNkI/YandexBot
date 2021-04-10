@@ -4,14 +4,15 @@ from discord.utils import get
 import requests
 from bs4 import BeautifulSoup
 
-
-HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                         'Chrome/86.0.4240.111 Safari/537.36'}
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                  'Chrome/86.0.4240.111 Safari/537.36'}
 
 LINKS_DOLLAR = "https://www.google.com/search?sxsrf=ALeKk01-G5_9JcFxgjtDU7651F-Pn7Jyeg%3A1603202429242&ei" \
         "=fe2OX7OmDu6krgS49qMw&q=%D0%BA%D1%83%D1%80%D1%81+%D0%B4%D0%BE%D0%BB%D0%BB%D0%B0%D1%80%D0%B0+%D0%BA+%D1%80%D1" \
         "%83%D0%B1%D0%BB%D1%8E&oq=%D0%BA%D1%83%D1%80%D1%81+%D0%B4%D0%BE%D0%BA+%D1%80%D1%83%D0%B1%D0%BB%D1%8E&gs_lcp" \
         "=CgZwc3ktYWIQAxgAMgYIABAHEB4yBggAEAcQHjIGCAAQBxAeMgQIABANMgYIABAHEB4yBggAEAcQHjIGCAAQBxAeMgYIABAHEB4yBggAEAcQHjIGCAAQBxAeOgQIABBHUPMZWPYbYLkoaABwA3gAgAGGAYgB9AGSAQMwLjKYAQCgAQGqAQdnd3Mtd2l6yAEIwAEB&sclient=psy-ab "
+appid = "97150f95dc173b86e58b20c0754d2634"  # токен
 
 LINKS_EURO = "https://www.google.com/search?sxsrf=ALeKk035VJ5f25dYB621YODHsOewYnaCLg%3A1603876654233&ei" \
              "=LjeZX_nkDcPmrgTptq7QDg&q=%D0%B5%D0%B2%D1%80%D0%BE+%D0%BA+%D1%80%D1%83%D0%B1%D0%BB%D1%8E&oq=%D0%B5%D0" \
@@ -48,7 +49,8 @@ def get_currency_price(name):
 
     soup = BeautifulSoup(full_page.content, 'html.parser')
     # Поиск нужной иформации в строках хода
-    convert = soup.findAll("span", {"class": "DFlfde", "class": "SwHCTb", "data-precision": 2})[0].text
+    convert = soup.findAll("span", {"class": "DFlfde", "class": "SwHCTb", "data-precision": 2})[
+        0].text
     convert = convert.replace(" ", "")
     response_letter.append(float(convert.replace(",", ".")))
     return response_letter
@@ -191,12 +193,77 @@ async def help(ctx):
     emb.add_field(name='{}dollar'.format('.'), value='Курс доллара')
     emb.add_field(name='{}euro'.format('.'), value='Курс евро')
     emb.add_field(name='{}frank'.format('.'), value='Курс франка')
+    emb.add_field(name='{}weather (city)'.format('.'), value='Прогноз погоды')
 
     await ctx.send(embed=emb)
 
 
+# weather - 1
+@client.command(pass_context=True)
+async def weather(ctx, pred_city):  # тут мы с помощью цыганских махинаций передаем город и он находит его на сайте
+    try:
+
+        res1 = requests.get("http://api.openweathermap.org/data/2.5/find",
+                            params={'q': pred_city, 'type': 'like',
+                                    'units': 'metric', 'APPID': appid})
+        data1 = res1.json()
+        cities = ["{} ({})".format(d['name'], d['sys']['country'])
+                  for d in data1['list']]
+        city_id = data1['list'][0]['id']
+
+        res = requests.get("http://api.openweathermap.org/data/2.5/forecast",
+                           params={'id': city_id, 'units': 'metric', 'lang': 'ru',
+                                   'APPID': appid})
+    except ValueError:
+        pass
+
+    data = res.json()
+    text = []
+    for i in data['list']:
+        text.append([i['dt_txt'], '{0:+3.0f}'.format(i['main']['temp']),
+                     i['weather'][0]['description']])
+
+    dateeee = []
+    data_res = []
+    text1 = text[0][0].split(' ')
+    if text1[0] not in dateeee:
+        dateeee.append(text1[0])
+        text2 = [text1[0], text[0][1], text[0][2]]
+        data_res.append(text2)
+    for i in range(len(text)):
+        text1 = text[i][0].split(' ')
+        if text1[0] not in dateeee:
+            dateeee.append(text1[0])
+            text2 = [text1[0], text[i][1], text[i][2]]
+            data_res.append(text2)
+
+    a1 = data_res[0][1] + '°C' + ' ' + data_res[0][2]
+    # не бейте
+    a2 = data_res[1][1] + '°C' + ' ' + data_res[1][2]
+    # не бейт°C
+    a3 = data_res[2][1] + '°C' + ' ' + data_res[2][2]
+    # не бейт°C
+    a4 = data_res[3][1] + '°C' + ' ' + data_res[3][2]
+    # не бейт°C
+    a5 = data_res[4][1] + '°C' + ' ' + data_res[4][2]
+    # не бейте, пожалуйста
+    b1 = data_res[0][0] + " - " + a1
+    b2 = data_res[1][0] + " - " + a2
+    b3 = data_res[2][0] + " - " + a3
+    b4 = data_res[3][0] + " - " + a4
+    b5 = data_res[4][0] + " - " + a5
+    mes = "Прогноз погоды в " + pred_city + ' на 5 дней:'
+    await ctx.send(mes)  # не бейте, пожалуйста
+    await ctx.send(b1)  # не бейте, пожалуйста
+    await ctx.send(b2)  # не бейте, пожалуйста
+    await ctx.send(b3)  # не бейте, пожалуйста
+    await ctx.send(b4)  # не бейте, пожалуйста
+    await ctx.send(b5)  # не бейте, пожалуйста
+
+
+
 # get token
 # token = open('token.txt', 'r').readline()
-token = "NzQ3NzczNjIzMzUxMTE1ODM2.X0TwdA.AHyEgLxnIt3JZyhigviReMRzy0E"
+token = "NzQ3NzczNjIzMzUxMTE1ODM2.X0TwdA.MNXLfBb4JHQuctD3m051Lc_IhoI"
 
 client.run(token)
