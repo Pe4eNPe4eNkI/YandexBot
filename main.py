@@ -4,6 +4,7 @@ from discord.utils import get
 import requests
 from bs4 import BeautifulSoup
 
+
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/86.0.4240.111 Safari/537.36'}
 
@@ -159,6 +160,7 @@ async def help(ctx):
 
 
 # get token
-token = open('token.txt', 'r').readline()
+# token = open('token.txt', 'r').readline()
+token = "NzQ3NzczNjIzMzUxMTE1ODM2.X0TwdA.AHyEgLxnIt3JZyhigviReMRzy0E"
 
 client.run(token)
