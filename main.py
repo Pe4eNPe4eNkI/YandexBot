@@ -5,7 +5,10 @@ import requests
 import pyowm
 import bs4
 from bs4 import BeautifulSoup
+import pymorphy2
 
+
+MORPH = pymorphy2.MorphAnalyzer()
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                   'Chrome/86.0.4240.111 Safari/537.36'}
@@ -41,8 +44,8 @@ haram = ['апездал', 'апездошенная', 'блядь', 'блядс
          'наебал', 'наебаловка', 'напиздеть', 'отъебись', 'охуеть', 'отхуевертить', 'опизденеть', 'охуевший',
          'отебукать', 'пизда', 'пидарас', 'пиздатый', 'пиздец', 'пизданутый', 'поебать', 'поебустика', 'проебать',
          'подзалупный', 'пизденыш', 'припиздак', 'разъебать', 'распиздяй', 'разъебанный', 'сука', 'сучка', 'трахать',
-         'уебок', 'уебать', 'угондошить', 'уебан', 'хитровыебанный', 'хуй', 'хуйня', 'заебешь',
-         'пидор', 'бля', 'заебешь']
+         'уебок', 'уебать', 'угондошить', 'уебан', 'хитровыебанный', 'хуй', 'хуйня', 'заебать',
+         'пидор', 'бля', 'заебал', 'заебешь']
 
 
 def get_currency_price(name):
@@ -103,7 +106,11 @@ async def on_message(message, amount=1):
             word = elem
         else:
             word = elem[:-1]
-        if word in haram:
+        if MORPH.parse(word)[0].normal_form in haram:
+            await message.channel.purge(limit=amount)
+            await message.channel.send('Пожалуйста, выражайтесь корректно)')
+            break
+        elif word in haram:
             await message.channel.purge(limit=amount)
             await message.channel.send('Пожалуйста, выражайтесь корректно)')
             break
@@ -379,6 +386,6 @@ async def weather(ctx, city):
 
 # get token
 # token = open('token.txt', 'r').readline()
-token = "-"
+token = "_"
 
 client.run(token)
