@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e7f85aa1-102b-4fa0-88a7-d4afa3d3a6ee" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +34,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Programms PyCharm" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -153,8 +154,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.bot" />
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.test" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.2 (1)" />
         <item itemvalue="Python.Currency_Parser" />
       </list>
@@ -232,7 +233,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618165383856</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Фильтр брани_2">
+      <created>1618167855636</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1618167855636</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -272,6 +280,7 @@
     <MESSAGE value="Курс доллара" />
     <MESSAGE value="Доллар_2" />
     <MESSAGE value="Фильтр брани, не читайте массив(" />
-    <option name="LAST_COMMIT_MESSAGE" value="Фильтр брани, не читайте массив(" />
+    <MESSAGE value="Фильтр брани_2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Фильтр брани_2" />
   </component>
 </project>

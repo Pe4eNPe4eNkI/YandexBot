@@ -6,6 +6,7 @@ import pyowm
 import bs4
 from bs4 import BeautifulSoup
 import pymorphy2
+from translate import Translator
 
 
 MORPH = pymorphy2.MorphAnalyzer()
@@ -97,29 +98,29 @@ def get_currency_price_translate(number_1, alpha, beta):
 
 
 # message
-@client.event
-@commands.has_permissions(administrator=True)
-async def on_message(message, amount=1):
-    msg = message.content.lower()
-    for elem in msg.split(" "):
-        if elem[-1].isalpha():
-            word = elem
-        else:
-            word = elem[:-1]
-        if MORPH.parse(word)[0].normal_form in haram:
-            await message.channel.purge(limit=amount)
-            await message.channel.send('Пожалуйста, выражайтесь корректно)')
-            break
-        elif word in haram:
-            await message.channel.purge(limit=amount)
-            await message.channel.send('Пожалуйста, выражайтесь корректно)')
-            break
-        elif word in hello_world:
-            await message.channel.send('Бонжюр! Что-то интересует?')
-            break
-        elif word in antword:
-            await message.channel.send('Напиши .help в чат для просмотра списка команд')
-            break
+#@client.event
+#@commands.has_permissions(administrator=True)
+#async def on_message(message, amount=1):
+    #msg = message.content.lower()
+    #for elem in msg.split(" "):
+        #if elem[-1].isalpha():
+            #word = elem
+        #else:
+            #word = elem[:-1]
+        #if MORPH.parse(word)[0].normal_form in haram:
+            #await message.channel.purge(limit=amount)
+            #await message.channel.send('Пожалуйста, выражайтесь корректно)')
+            #break
+        #elif word in haram:
+            #await message.channel.purge(limit=amount)
+            #await message.channel.send('Пожалуйста, выражайтесь корректно)')
+            #break
+        #elif word in hello_world:
+            #await message.channel.send('Бонжюр! Что-то интересует?')
+            #break
+        #elif word in antword:
+            #await message.channel.send('Напиши .help в чат для просмотра списка команд')
+            #break
 
 
 @client.event
@@ -134,6 +135,23 @@ async def hello(ctx):
     author = ctx.message.author
     await ctx.send(
         f'{author.mention}, приветствую, но не на немецком! | {author.mention}, привет! как дела?')
+
+
+# translate
+@client.command(pass_context=True)
+async def translate(ctx, language_1, language_2, *text):
+    translator = Translator(from_lang=language_1, to_lang=language_2)
+    answer = []
+    for elem in text:
+        if elem[-1].isalpha():
+            word = elem
+            translation = translator.translate(word)
+            answer.append(translation)
+        else:
+            word = elem[:-1]
+            translation = translator.translate(word)
+            answer.append(translation + elem[-1])
+    await ctx.channel.send(" ".join(answer))
 
 
 # auto role
@@ -241,7 +259,7 @@ async def frank(ctx):
 
 # translate
 @client.command(pass_context=True)
-async def translate(ctx, number_1, alpha, beta):
+async def translate_money(ctx, number_1, alpha, beta):
     await ctx.send(
         f'{number_1} в {alpha} = {get_currency_price_translate(number_1, alpha, beta)} в {beta}')
 
@@ -269,8 +287,10 @@ async def help(ctx):
     emb.add_field(name='{}weathers (city)'.format('.'), value='Прогноз погоды на 5 дней')
     emb.add_field(name='{}weather (city)'.format('.'), value='Прогноз погоды')
 
-    emb.add_field(name='{}translate (quantity, first_currency, second_currency)'.format('.'),
+    emb.add_field(name='{}translate_money (quantity, first_currency, second_currency)'.format('.'),
                   value='Перевод одной валюты в другую')
+    emb.add_field(name='{}translate (first language, second language, text)'.format('.'),
+                  value='Перевод (исходный язык, новый язык, текст)')
 
     await ctx.send(embed=emb)
 
