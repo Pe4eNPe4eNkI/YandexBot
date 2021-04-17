@@ -11,7 +11,9 @@ import asyncio
 import bs4
 from bs4 import BeautifulSoup
 import pymorphy2
-import Translator
+
+# from translate import Translator
+
 
 client = commands.Bot(command_prefix='.')
 client.remove_command('help')
@@ -199,6 +201,20 @@ async def ban(ctx, member: discord.Member, *, reason=None):
     await ctx.send(embed=emb)
 
 
+@client.command()
+async def unban(ctx, *, member):
+    banned_users = await ctx.guild.bans()
+
+    member_name, member_discriminator = member.split('#')
+    for ban_entry in banned_users:
+        user = ban_entry.user
+
+        if (user.name, user.discriminator) == (member_name, member_discriminator):
+            await ctx.guild.unban(user)
+
+        await ctx.channel.send(f"Unbanned: {user.mention}")
+
+
 # kick
 @client.command(pass_context=True)
 @commands.has_permissions(administrator=True)
@@ -379,15 +395,39 @@ async def create_role(ctx):
     await ctx.send(f'Роль {role_name} успешно создана!')
 
 
-@client.command()
-@commands.has_role(832946932237991951)
-async def mute(ctx, who: discord.Member, time: int, reason):
-    print(f'[command.mute] От {ctx.author}, кого {who}')
-    await ctx.send(f'--> {who} получил мут на {time} минут по причине: {reason}')
-    await who.add_roles(Object(832946932237991951))
-    await who.move_to(None)
-    await asyncio.sleep(time * 60)
-    await who.remove_roles(Object(832946932237991951))
+# mute
+@client.command(description="Mutes the specified user.")
+@commands.has_permissions(manage_messages=True)
+async def mute(ctx, member: discord.Member, *, reason=None):
+    guild = ctx.guild
+    mutedRole = discord.utils.get(guild.roles, name="Muted")
+
+    if not mutedRole:
+        mutedRole = await guild.create_role(name="Muted")
+
+        for channel in guild.channels:
+            await channel.set_permissions(mutedRole, connect=False,
+                                          speak=False, send_messages=False,
+                                          read_message_history=True, read_messages=False)
+    embed = discord.Embed(title="Muted", description=f"{member.mention} был добавлен в мьют",
+                          colour=discord.Colour.light_gray())
+    embed.add_field(name="Причина:", value=reason, inline=False)
+    await ctx.send(embed=embed)
+    await member.add_roles(mutedRole, reason=reason)
+    await member.send(f" you have been muted from: {guild.name} reason: {reason}")
+
+
+# unmute
+@client.command(description="Unmutes a specified user.")
+@commands.has_permissions(manage_messages=True)
+async def unmute(ctx, member: discord.Member):
+    mutedRole = discord.utils.get(ctx.guild.roles, name="Muted")
+
+    await member.remove_roles(mutedRole)
+    await member.send(f" you have unmutedd from: - {ctx.guild.name}")
+    embed = discord.Embed(title="Unmute", description=f"{member.mention} больше не в мьюте",
+                          colour=discord.Colour.light_gray())
+    await ctx.send(embed=embed)
 
 
 # help
