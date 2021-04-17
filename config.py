@@ -12,9 +12,13 @@ import bs4
 from bs4 import BeautifulSoup
 import pymorphy2
 
-TOKEN = '-'
+TOKEN = 'NzQ3NzczNjIzMzUxMTE1ODM2.X0TwdA.r1lfDKiWdSOYtCXyzIgiHlvfuLY'
 
 MORPH = pymorphy2.MorphAnalyzer()
+
+appid = "97150f95dc173b86e58b20c0754d2634"  # токен
+
+owm = pyowm.OWM('97150f95dc173b86e58b20c0754d2634')  # это токен, который мы получаем
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -24,10 +28,6 @@ LINKS_DOLLAR = "https://www.google.com/search?sxsrf=ALeKk01-G5_9JcFxgjtDU7651F-P
                "=fe2OX7OmDu6krgS49qMw&q=%D0%BA%D1%83%D1%80%D1%81+%D0%B4%D0%BE%D0%BB%D0%BB%D0%B0%D1%80%D0%B0+%D0%BA+%D1%80%D1" \
                "%83%D0%B1%D0%BB%D1%8E&oq=%D0%BA%D1%83%D1%80%D1%81+%D0%B4%D0%BE%D0%BA+%D1%80%D1%83%D0%B1%D0%BB%D1%8E&gs_lcp" \
                "=CgZwc3ktYWIQAxgAMgYIABAHEB4yBggAEAcQHjIGCAAQBxAeMgQIABANMgYIABAHEB4yBggAEAcQHjIGCAAQBxAeMgYIABAHEB4yBggAEAcQHjIGCAAQBxAeOgQIABBHUPMZWPYbYLkoaABwA3gAgAGGAYgB9AGSAQMwLjKYAQCgAQGqAQdnd3Mtd2l6yAEIwAEB&sclient=psy-ab "
-
-appid = "97150f95dc173b86e58b20c0754d2634"  # токен
-
-owm = pyowm.OWM('97150f95dc173b86e58b20c0754d2634')  # это токен, который мы получаем
 
 LINKS_EURO = "https://www.google.com/search?sxsrf=ALeKk035VJ5f25dYB621YODHsOewYnaCLg%3A1603876654233&ei" \
              "=LjeZX_nkDcPmrgTptq7QDg&q=%D0%B5%D0%B2%D1%80%D0%BE+%D0%BA+%D1%80%D1%83%D0%B1%D0%BB%D1%8E&oq=%D0%B5%D0" \
@@ -39,7 +39,7 @@ LINKS_FRANK = "https://www.google.com/search?sxsrf=ALeKk01pScRniXA8RAy8HfnlTLSk0
               "%B0+%D0%BA+%D1%80%D1%83%D0%B1%D0%BB%D1%8E&oq=%D1%84%D1%83%D0%BD%D1%82%D0%BA+%D1%80%D1%83%D0%B1%D0%BB" \
               "%D1%8E&gs_lcp=CgZwc3ktYWIQAxgBMgkIABCxAxAHEB4yBggAEAcQHjIGCAAQBxAeMgYIABAHEB4yBggAEAcQHjIGCAAQBxAeMgYIABAHEB4yBggAEAcQHjIGCAAQBxAeMgYIABAHEB46BwgAEEcQsANQyooBWPGQAWCkqAFoAnAAeACAAYsBiAHWA5IBAzAuNJgBAKABAaoBB2d3cy13aXrIAQjAAQE&sclient=psy-ab "
 
-POST_ID = 832955058730565633
+POST_ID = 832997258868949013
 
 ROLES = {
     '🍪': 832946932237991951,
@@ -57,10 +57,13 @@ client.remove_command('help')
 
 hello_world = ['привет', 'hi', 'Hi', 'Hello', 'hello', 'qq', 'q', 'ky', 'Привет', 'здравствуйте',
                'Здравствуйте', 'Ку', 'здорова', 'Хеллоу', "хеллоу"]
+
 antword = ['информация', 'команды', 'help',
            'Help', 'info', 'Info', 'что делать']
-haram = ['апездал', 'апездошенная', 'блядь', 'блядство', 'выебон', 'выебать', 'вхуюжить', 'гомосек',
-         'долбоёб',
+
+# осуждаем код ниже
+haram = ['апездал', 'апездошенная', 'блядь', 'блять', 'блядство', 'выебон', 'выебать', 'вхуюжить',
+         'гомосек', 'долбоёб',
          'ебло', 'еблище', 'ебать', 'ебическая сила', 'ебунок', 'еблан', 'ёбнуть', 'ёболызнуть',
          'ебош', 'заебал',
          'заебатый', 'злаебучий', 'заёб', 'иди на хуй', 'колдоебина', 'манда', 'мандовошка',
@@ -71,5 +74,5 @@ haram = ['апездал', 'апездошенная', 'блядь', 'блядс
          'поебустика', 'проебать',
          'подзалупный', 'пизденыш', 'припиздак', 'разъебать', 'распиздяй', 'разъебанный', 'сука',
          'сучка', 'трахать',
-         'уебок', 'уебать', 'угондошить', 'уебан', 'хитровыебанный', 'хуй', 'хуйня', 'заебать',
-         'пидор', 'бля', 'заебал', 'заебешь']
+         'уебок', 'уебать', 'угондошить', 'уебан', 'хитровыебанный', 'нахуй', 'хуй', 'хуйня',
+         'заебать', 'пидор', 'бля', 'заебал', 'заебешь']
