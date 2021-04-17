@@ -410,6 +410,6 @@ async def weather(ctx, city):
     await ctx.send(w)  # выводим
 
 
-token = "NzQ3NzczNjIzMzUxMTE1ODM2.X0TwdA.gxZajU7CLiukD-inpClPnQrAQAc"
+token = "="
 
 client.run(token)
