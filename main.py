@@ -1,13 +1,15 @@
 import discord
 from discord.ext import commands
 from discord.utils import get
+from discord.ext import commands
+from discord.ext.commands import Bot
 import requests
 import pyowm
 import bs4
 from bs4 import BeautifulSoup
 import pymorphy2
-from translate import Translator
 
+# from translate import Translator
 
 MORPH = pymorphy2.MorphAnalyzer()
 HEADERS = {
@@ -39,12 +41,18 @@ hello_world = ['привет', 'hi', 'Hi', 'Hello', 'hello', 'qq', 'q', 'ky', '�
                'Здравствуйте', 'Ку', 'здорова', 'Хеллоу', "хеллоу"]
 antword = ['информация', 'команды', 'help',
            'Help', 'info', 'Info', 'что делать']
-haram = ['апездал', 'апездошенная', 'блядь', 'блядство', 'выебон', 'выебать', 'вхуюжить', 'гомосек', 'долбоёб',
-         'ебло', 'еблище', 'ебать', 'ебическая сила', 'ебунок', 'еблан', 'ёбнуть', 'ёболызнуть', 'ебош', 'заебал',
-         'заебатый', 'злаебучий', 'заёб', 'иди на хуй', 'колдоебина', 'манда', 'мандовошка', 'мокрощелка', 'наебка',
-         'наебал', 'наебаловка', 'напиздеть', 'отъебись', 'охуеть', 'отхуевертить', 'опизденеть', 'охуевший',
-         'отебукать', 'пизда', 'пидарас', 'пиздатый', 'пиздец', 'пизданутый', 'поебать', 'поебустика', 'проебать',
-         'подзалупный', 'пизденыш', 'припиздак', 'разъебать', 'распиздяй', 'разъебанный', 'сука', 'сучка', 'трахать',
+haram = ['апездал', 'апездошенная', 'блядь', 'блядство', 'выебон', 'выебать', 'вхуюжить', 'гомосек',
+         'долбоёб',
+         'ебло', 'еблище', 'ебать', 'ебическая сила', 'ебунок', 'еблан', 'ёбнуть', 'ёболызнуть',
+         'ебош', 'заебал',
+         'заебатый', 'злаебучий', 'заёб', 'иди на хуй', 'колдоебина', 'манда', 'мандовошка',
+         'мокрощелка', 'наебка',
+         'наебал', 'наебаловка', 'напиздеть', 'отъебись', 'охуеть', 'отхуевертить', 'опизденеть',
+         'охуевший',
+         'отебукать', 'пизда', 'пидарас', 'пиздатый', 'пиздец', 'пизданутый', 'поебать',
+         'поебустика', 'проебать',
+         'подзалупный', 'пизденыш', 'припиздак', 'разъебать', 'распиздяй', 'разъебанный', 'сука',
+         'сучка', 'трахать',
          'уебок', 'уебать', 'угондошить', 'уебан', 'хитровыебанный', 'хуй', 'хуйня', 'заебать',
          'пидор', 'бля', 'заебал', 'заебешь']
 
@@ -98,29 +106,30 @@ def get_currency_price_translate(number_1, alpha, beta):
 
 
 # message
-#@client.event
-#@commands.has_permissions(administrator=True)
-#async def on_message(message, amount=1):
-    #msg = message.content.lower()
-    #for elem in msg.split(" "):
-        #if elem[-1].isalpha():
-            #word = elem
-        #else:
-            #word = elem[:-1]
-        #if MORPH.parse(word)[0].normal_form in haram:
-            #await message.channel.purge(limit=amount)
-            #await message.channel.send('Пожалуйста, выражайтесь корректно)')
-            #break
-        #elif word in haram:
-            #await message.channel.purge(limit=amount)
-            #await message.channel.send('Пожалуйста, выражайтесь корректно)')
-            #break
-        #elif word in hello_world:
-            #await message.channel.send('Бонжюр! Что-то интересует?')
-            #break
-        #elif word in antword:
-            #await message.channel.send('Напиши .help в чат для просмотра списка команд')
-            #break
+@client.event
+@commands.has_permissions(administrator=True)
+async def on_message(message, amount=1):
+    msg = message.content.lower()
+    for elem in msg.split(" "):
+        if elem[-1].isalpha():  # ломается на моменте цикла, мб есть смысл поменять значение
+            word = elem
+        else:
+            word = elem[:-1]
+        if MORPH.parse(word)[0].normal_form in haram:
+            await message.channel.purge(limit=amount)
+            await message.channel.send('Пожалуйста, выражайтесь корректно)')
+            break
+        elif word in haram:
+            await message.channel.purge(limit=amount)
+            await message.channel.send('Пожалуйста, выражайтесь корректно)')
+            break
+        elif word in hello_world:
+            await message.channel.send('Бонжюр! Что-то интересует?')
+            break
+        elif word in antword:
+            await message.channel.send('Напиши .help в чат для просмотра списка команд')
+            break
+    await client.process_commands(message)
 
 
 @client.event
@@ -138,26 +147,26 @@ async def hello(ctx):
 
 
 # translate
-@client.command(pass_context=True)
-async def translate(ctx, language_1, language_2, *text):
-    translator = Translator(from_lang=language_1, to_lang=language_2)
-    answer = []
-    for elem in text:
-        if elem[-1].isalpha():
-            word = elem
-            translation = translator.translate(word)
-            answer.append(translation)
-        else:
-            word = elem[:-1]
-            translation = translator.translate(word)
-            answer.append(translation + elem[-1])
-    await ctx.channel.send(" ".join(answer))
+# client.command(pass_context=True)
+# sync def translate(ctx, language_1, language_2, *text):
+#   translator = Translator(from_lang=language_1, to_lang=language_2)
+#   answer = []
+#   for elem in text:
+#       if elem[-1].isalpha():
+#           word = elem
+#           translation = translator.translate(word)
+#           answer.append(translation)
+#       else:
+#           word = elem[:-1]
+#           translation = translator.translate(word)
+#           answer.append(translation + elem[-1])
+#   await ctx.channel.send(" ".join(answer))
 
 
 # auto role
 @client.event
 async def on_member_join(member):
-    channel = client.get_channel(689176999578697755)
+    channel = client.get_channel(748059364555751475)
     role = discord.utils.get(member.guild.roles, id=689430828089868292)
 
     await member.add_roles(role)
@@ -239,15 +248,13 @@ async def leave(ctx):
 # dollar
 @client.command(pass_context=True)
 async def dollar(ctx):
-    await ctx.send(
-        f'Курс доллара в рублях: {get_currency_price("dollar")[0]}')
+    await ctx.send(f'Курс доллара в рублях: {get_currency_price("dollar")[0]}')
 
 
 # euro
 @client.command(pass_context=True)
 async def euro(ctx):
-    await ctx.send(
-        f'Курс евро в рублях: {get_currency_price("euro")[0]}')
+    await ctx.send(f'Курс евро в рублях: {get_currency_price("euro")[0]}')
 
 
 # frank
@@ -297,8 +304,7 @@ async def help(ctx):
 
 # weather 5 day
 @client.command(pass_context=True)
-async def weathers(ctx,
-                   pred_city):  # тут мы с помощью цыганских махинаций передаем город и он находит его на сайте
+async def weathers(ctx, pred_city):  # тут мы с помощью цыганских махинаций передаем город и он находит его на сайте
     try:
 
         res1 = requests.get("http://api.openweathermap.org/data/2.5/find",
@@ -404,8 +410,6 @@ async def weather(ctx, city):
     await ctx.send(w)  # выводим
 
 
-# get token
-# token = open('token.txt', 'r').readline()
-token = "_"
+token = "NzQ3NzczNjIzMzUxMTE1ODM2.X0TwdA.gxZajU7CLiukD-inpClPnQrAQAc"
 
 client.run(token)
