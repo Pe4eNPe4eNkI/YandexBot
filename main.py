@@ -129,20 +129,17 @@ class DiscordBot(discord.Client):
                 break
         await client.process_commands(message)
 
-
     # @client.event
     # async def on_ready():
     #    print('Connected')
     #    await client.change_presence(status=discord.Status.online,
     #                                 activity=discord.Game('Yandex.Lyceum | .help'))
 
-
     @client.command(pass_context=True)
     async def hello(ctx):
         author = ctx.message.author
         await ctx.send(
             f'{author.mention}, приветствую, но не на немецком! | {author.mention}, привет! как дела?')
-
 
     # translate
     @client.command(pass_context=True)
@@ -159,7 +156,6 @@ class DiscordBot(discord.Client):
                 translation = translator.translate(word)
                 answer.append(translation + elem[-1])
         await ctx.channel.send(" ".join(answer))
-
 
     ## auto role
     # @client.event
@@ -203,7 +199,6 @@ class DiscordBot(discord.Client):
 
         await ctx.send(embed=emb)
 
-
     # kick
     @client.command(pass_context=True)
     @commands.has_permissions(administrator=True)
@@ -220,13 +215,11 @@ class DiscordBot(discord.Client):
 
         await ctx.send(embed=emb)
 
-
     # clear
     @client.command(pass_context=True)
     @commands.has_permissions(administrator=True)
     async def clear(ctx, amount=100):
         await ctx.channel.purge(limit=amount)
-
 
     # join voice
     @client.command()
@@ -241,7 +234,6 @@ class DiscordBot(discord.Client):
             voice = await channel.connect()
             await ctx.send(f'Бот присоединился к  {channel}')
 
-
     # leave voice
     @client.command()
     async def leave(ctx):
@@ -255,18 +247,15 @@ class DiscordBot(discord.Client):
             voice = await channel.conneсt()
             await voice.disconnect()
 
-
     # dollar
     @client.command(pass_context=True)
     async def dollar(ctx):
         await ctx.send(f'Курс доллара в рублях: {get_currency_price("dollar")[0]}')
 
-
     # euro
     @client.command(pass_context=True)
     async def euro(ctx):
         await ctx.send(f'Курс евро в рублях: {get_currency_price("euro")[0]}')
-
 
     # frank
     @client.command(pass_context=True)
@@ -274,13 +263,11 @@ class DiscordBot(discord.Client):
         await ctx.send(
             f'Курс франка в рублях: {get_currency_price("frank")[0]}')
 
-
     # translate
     @client.command(pass_context=True)
     async def translate_money(ctx, number_1, alpha, beta):
         await ctx.send(
             f'{number_1} в {alpha} = {get_currency_price_translate(number_1, alpha, beta)} в {beta}')
-
 
     # weather 5 day
     @client.command(pass_context=True)
@@ -344,7 +331,6 @@ class DiscordBot(discord.Client):
         await ctx.send(b4)  # не бейте, пожалуйста
         await ctx.send(b5)  # не бейте, пожалуйста
 
-
     # weather one day
     @client.command(pass_context=True)
     async def weather(ctx, city):
@@ -389,7 +375,6 @@ class DiscordBot(discord.Client):
         await ctx.send(s)  # выводим
         await ctx.send(w)  # выводим
 
-
     @client.command(pass_context=True)
     async def create_role(ctx):
         role_name = ' '.join(ctx.message.content.split()[1:])
@@ -397,7 +382,6 @@ class DiscordBot(discord.Client):
         new_role = await client.create_role(ctx.message.guild)
         await client.edit_role(guild, new_role, name=role_name)
         await ctx.send(f'Роль {role_name} успешно создана!')
-
 
     @client.command()
     @commands.has_role(832946932237991951)
@@ -408,7 +392,6 @@ class DiscordBot(discord.Client):
         await who.move_to(None)
         await asyncio.sleep(time * 60)
         await who.remove_roles(Object(832946932237991951))
-
 
     # help
     @client.command(pass_context=True)
