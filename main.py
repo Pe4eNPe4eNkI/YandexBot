@@ -15,9 +15,6 @@ from translate import Translator
 import sqlite3 as sql
 
 
-slaves = {}
-
-
 client = commands.Bot(command_prefix='.')
 client.remove_command('help')
 
@@ -131,34 +128,34 @@ async def on_message(message):
                 author = message.author
                 await message.channel.purge(limit=amount)
                 await message.channel.send('Пожалуйста, выражайтесь корректно)')
-                if author not in slaves.keys():
-                    slaves[author] = 1
+                if author not in config.slaves.keys():
+                    config.slaves[author] = 1
                     await message.channel.sendMessage(f'{author.mention}, у тебя 1 просчет, грядет бан!')
                     break
                 else:
-                    if slaves[author] == 1:
-                        slaves[author] = 2
+                    if config.slaves[author] == 1:
+                        config.slaves[author] = 2
                         await message.channel.sendMessage(f'{author.mention}, еще раз, и получишь бан!')
                         break
-                    elif slaves[author] == 2:
-                        slaves[author] = 3
+                    elif config.slaves[author] == 2:
+                        config.slaves[author] = 3
                         await message.channel.sendMessage(f'{author.mention}, take it, boy!')
                         break
             elif word in config.haram:
                 author = message.author
                 await message.channel.purge(limit=amount)
                 await message.channel.send('Пожалуйста, выражайтесь корректно)')
-                if author not in slaves.keys():
-                    slaves[author] = 1
+                if author not in config.slaves.keys():
+                    config.slaves[author] = 1
                     await message.channel.sendMessage(f'{author.mention}, у тебя 1 просчет, грядет бан!')
                     break
                 else:
-                    if slaves[author] == 1:
-                        slaves[author] = 2
+                    if config.slaves[author] == 1:
+                        config.slaves[author] = 2
                         await message.channel.sendMessage(f'{author.mention}, еще раз, и получишь бан!')
                         break
-                    elif slaves[author] == 2:
-                        slaves[author] = 3
+                    elif config.slaves[author] == 2:
+                        config.slaves[author] = 3
                         await message.channel.sendMessage(f'{author.mention}, take it, boy!')
                         break
                 break
