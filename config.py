@@ -12,10 +12,7 @@ import bs4
 from bs4 import BeautifulSoup
 import pymorphy2
 
-
-slaves = {}
-
-TOKEN = '='
+TOKEN = 'NzQ3NzczNjIzMzUxMTE1ODM2.X0TwdA.v1aX4RHsEapF5g4pFQWZLALetOw'
 
 MORPH = pymorphy2.MorphAnalyzer()
 
