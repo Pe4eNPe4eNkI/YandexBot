@@ -12,6 +12,7 @@ import bs4
 from bs4 import BeautifulSoup
 import pymorphy2
 from translate import Translator
+import sqlite3 as sql
 
 
 slaves = {}
