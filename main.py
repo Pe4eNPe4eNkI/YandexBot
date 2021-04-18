@@ -11,8 +11,7 @@ import asyncio
 import bs4
 from bs4 import BeautifulSoup
 import pymorphy2
-
-# from translate import Translator
+from translate import Translator
 
 
 client = commands.Bot(command_prefix='.')
@@ -117,32 +116,34 @@ def get_currency_price_translate(number_1, alpha, beta):
 @commands.has_permissions(administrator=True)
 async def on_message(message, amount=1):
     msg = message.content.lower()
-    for elem in msg.split(" "):
-        if elem[-1].isalpha():  # ломается на моменте цикла, мб есть смысл поменять значение
-            word = elem
-        else:
-            word = elem[:-1]
-        if config.MORPH.parse(word)[0].normal_form in config.haram:
-            await message.channel.purge(limit=amount)
-            await message.channel.send('Пожалуйста, выражайтесь корректно)')
-            break
-        elif word in config.haram:
-            await message.channel.purge(limit=amount)
-            await message.channel.send('Пожалуйста, выражайтесь корректно)')
-            break
-        elif word in config.hello_world:
-            await message.channel.send('Бонжюр! Что-то интересует?')
-            break
-        elif word in config.antword:
-            await message.channel.send('Напиши .help в чат для просмотра списка команд')
-            break
-    await client.process_commands(message)
+    if msg[0] != '.':
+        for elem in msg.split(" "):
+            if elem[-1].isalpha():  # ломается на моменте цикла, мб есть смысл поменять значение
+                word = elem
+            else:
+                word = elem[:-1]
+            if config.MORPH.parse(word)[0].normal_form in config.haram:
+                await message.channel.purge(limit=amount)
+                await message.channel.sendMessage('Пожалуйста, выражайтесь корректно)')
+                break
+            elif word in config.haram:
+                await message.channel.purge(limit=amount)
+                await message.channel.sendMessage('Пожалуйста, выражайтесь корректно)')
+                break
+            elif word in config.hello_world:
+                await message.channel.sendMessage('Бонжюр! Что-то интересует?')
+                break
+            elif word in config.antword:
+                await message.channel.sendMessage('Напиши .help в чат для просмотра списка команд')
+                break
+    else:
+        await client.process_commands(message)
 
 
 @client.command(pass_context=True)
 async def hello(ctx):
     author = ctx.message.author
-    await ctx.send(
+    await ctx.sendMessage(
         f'{author.mention}, приветствую, но не на немецком! | {author.mention}, привет! как дела?')
 
 
@@ -160,7 +161,7 @@ async def translate(ctx, language_1, language_2, *text):
             word = elem[:-1]
             translation = translator.translate(word)
             answer.append(translation + elem[-1])
-    await ctx.channel.send(" ".join(answer))
+    await ctx.channel.sendMessage(" ".join(answer))
 
 
 # auto role
@@ -170,7 +171,7 @@ async def translate(ctx, language_1, language_2, *text):
 #    role = discord.utils.get(member.guild.roles, id=689430828089868292)
 #
 #    await member.add_roles(role)
-#    await channel.send(
+#    await channel.sendMessage(
 #        embed=discord.Embed(discription=f'Пользователь ''{member.name}'' присоединился к серверу!',
 #                            color=0x0c0c0c))
 #
@@ -198,7 +199,7 @@ async def ban(ctx, member: discord.Member, *, reason=None):
                   value='Banned user: {}'.format(member.mention))
     emb.set_footer(
         text='Был забанен администратором{}'.format(ctx.author.name))
-    await ctx.send(embed=emb)
+    await ctx.sendMessage(embed=emb)
 
 
 @client.command()
@@ -212,7 +213,7 @@ async def unban(ctx, *, member):
         if (user.name, user.discriminator) == (member_name, member_discriminator):
             await ctx.guild.unban(user)
 
-        await ctx.channel.send(f"Unbanned: {user.mention}")
+        await ctx.channel.sendMessage(f"Unbanned: {user.mention}")
 
 
 # kick
@@ -226,7 +227,7 @@ async def kick(ctx, member: discord.Member, *, reason=None):
     emb.add_field(name='Kick user',
                   value='Kicked user: {}'.format(member.mention))
     emb.set_footer(text='Был кикнут администратором{}'.format(ctx.author.name))
-    await ctx.send(embed=emb)
+    await ctx.sendMessage(embed=emb)
 
 
 # clear
@@ -246,7 +247,7 @@ async def join(ctx):
         await voice.move_to(channel)
     else:
         voice = await channel.connect()
-        await ctx.send(f'Бот присоединился к  {channel}')
+        await ctx.sendMessage(f'Бот присоединился к  {channel}')
 
 
 # leave voice
@@ -255,7 +256,7 @@ async def leave(ctx):
     channel = ctx.message.author.voice.channel
     voice = get(client.voice_clients, guild=ctx.guild)
     if voice and voice.is_connected():
-        await ctx.send(f'Бот отключился от  {channel}')
+        await ctx.sendMessage(f'Бот отключился от  {channel}')
         await voice.disconnect()
     else:
         voice = await channel.conneсt()
@@ -265,26 +266,26 @@ async def leave(ctx):
 # dollar
 @client.command(pass_context=True)
 async def dollar(ctx):
-    await ctx.send(f'Курс доллара в рублях: {get_currency_price("dollar")[0]}')
+    await ctx.sendMessage(f'Курс доллара в рублях: {get_currency_price("dollar")[0]}')
 
 
 # euro
 @client.command(pass_context=True)
 async def euro(ctx):
-    await ctx.send(f'Курс евро в рублях: {get_currency_price("euro")[0]}')
+    await ctx.sendMessage(f'Курс евро в рублях: {get_currency_price("euro")[0]}')
 
 
 # frank
 @client.command(pass_context=True)
 async def frank(ctx):
-    await ctx.send(
+    await ctx.sendMessage(
         f'Курс франка в рублях: {get_currency_price("frank")[0]}')
 
 
 # translate
 @client.command(pass_context=True)
 async def translate_money(ctx, number_1, alpha, beta):
-    await ctx.send(
+    await ctx.sendMessage(
         f'{number_1} в {alpha} = {get_currency_price_translate(number_1, alpha, beta)} в {beta}')
 
 
@@ -338,12 +339,12 @@ async def weathers(ctx, pred_city):
     b4 = data_res[3][0] + " - " + a4
     b5 = data_res[4][0] + " - " + a5
     mes = "Прогноз погоды в " + pred_city + ' на 5 дней:'
-    await ctx.send(mes)  # не бейте, пожалуйста
-    await ctx.send(b1)  # не бейте, пожалуйста
-    await ctx.send(b2)  # не бейте, пожалуйста
-    await ctx.send(b3)  # не бейте, пожалуйста
-    await ctx.send(b4)  # не бейте, пожалуйста
-    await ctx.send(b5)  # не бейте, пожалуйста
+    await ctx.sendMessage(mes)  # не бейте, пожалуйста
+    await ctx.sendMessage(b1)  # не бейте, пожалуйста
+    await ctx.sendMessage(b2)  # не бейте, пожалуйста
+    await ctx.sendMessage(b3)  # не бейте, пожалуйста
+    await ctx.sendMessage(b4)  # не бейте, пожалуйста
+    await ctx.sendMessage(b5)  # не бейте, пожалуйста
 
 
 # weather one day
@@ -354,7 +355,7 @@ async def weather(ctx, city):
         observation = mgr.weather_at_place(city)  # тут ищем саму температуру
         w = observation.weather
         temp = w.temperature('celsius')['temp']
-        await ctx.send(f'Температура: {temp}°C')  # вот сама функция по выводу
+        await ctx.sendMessage(f'Температура: {temp}°C')  # вот сама функция по выводу
         # погоды в городе
     except ValueError:
         pass
@@ -381,9 +382,9 @@ async def weather(ctx, city):
     f_two_2 = humidity_two_2.split('Влажность')
     s = "Влажность: " + f_two_2[0]
     w = "Ветер: " + wie_two_2
-    await ctx.send(f[0])  # выводим наше "состояние погоды"
-    await ctx.send(s)  # выводим
-    await ctx.send(w)  # выводим
+    await ctx.sendMessage(f[0])  # выводим наше "состояние погоды"
+    await ctx.sendMessage(s)  # выводим
+    await ctx.sendMessage(w)  # выводим
 
 
 @client.command(pass_context=True)
@@ -392,7 +393,7 @@ async def create_role(ctx):
     guild = ctx.message.guild
     new_role = await client.create_role(ctx.message.guild)
     await client.edit_role(guild, new_role, name=role_name)
-    await ctx.send(f'Роль {role_name} успешно создана!')
+    await ctx.sendMessage(f'Роль {role_name} успешно создана!')
 
 
 # mute
@@ -407,14 +408,14 @@ async def mute(ctx, member: discord.Member, *, reason=None):
 
         for channel in guild.channels:
             await channel.set_permissions(mutedRole, connect=False,
-                                          speak=False, send_messages=False,
+                                          speak=False, sendMessage_messages=False,
                                           read_message_history=True, read_messages=False)
     embed = discord.Embed(title="Muted", description=f"{member.mention} был добавлен в мьют",
                           colour=discord.Colour.light_gray())
     embed.add_field(name="Причина:", value=reason, inline=False)
-    await ctx.send(embed=embed)
+    await ctx.sendMessage(embed=embed)
     await member.add_roles(mutedRole, reason=reason)
-    await member.send(f" you have been muted from: {guild.name} reason: {reason}")
+    await member.sendMessage(f" you have been muted from: {guild.name} reason: {reason}")
 
 
 # unmute
@@ -424,10 +425,10 @@ async def unmute(ctx, member: discord.Member):
     mutedRole = discord.utils.get(ctx.guild.roles, name="Muted")
 
     await member.remove_roles(mutedRole)
-    await member.send(f" you have unmutedd from: - {ctx.guild.name}")
+    await member.sendMessage(f" you have unmutedd from: - {ctx.guild.name}")
     embed = discord.Embed(title="Unmute", description=f"{member.mention} больше не в мьюте",
                           colour=discord.Colour.light_gray())
-    await ctx.send(embed=embed)
+    await ctx.sendMessage(embed=embed)
 
 
 # help
@@ -456,7 +457,7 @@ async def help(ctx):
         value='Перевод одной валюты в другую')
     emb.add_field(name='{}translate (first language, second language, text)'.format('.'),
                   value='Перевод (исходный язык, новый язык, текст)')
-    await ctx.send(embed=emb)
+    await ctx.sendMessage(embed=emb)
 
 
 client.run(config.TOKEN)

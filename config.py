@@ -12,7 +12,7 @@ import bs4
 from bs4 import BeautifulSoup
 import pymorphy2
 
-TOKEN = '.'
+TOKEN = '='
 
 MORPH = pymorphy2.MorphAnalyzer()
 
