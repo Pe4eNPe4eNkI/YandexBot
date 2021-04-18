@@ -443,7 +443,7 @@ async def create_role(ctx, *text):
     guild = ctx.guild
     text = ' '.join(text)
     await guild.create_role(name=text)
-    embed = discord.Embed(title="Role: ", description=f"Роль {text} успешно создана!",
+    embed = discord.Embed(title="Role: ", description=f"Роль {text} успешно создана :)",
                           colour=discord.Colour.blue())
     await ctx.send(embed=embed)
 
