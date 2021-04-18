@@ -14,6 +14,9 @@ import pymorphy2
 from translate import Translator
 
 
+slaves = {}
+
+
 client = commands.Bot(command_prefix='.')
 client.remove_command('help')
 
@@ -114,7 +117,8 @@ def get_currency_price_translate(number_1, alpha, beta):
 # message
 @client.event
 @commands.has_permissions(administrator=True)
-async def on_message(message, amount=1):
+async def on_message(message):
+    amount = 1
     msg = message.content.lower()
     if msg[0] != '.':
         for elem in msg.split(" "):
@@ -123,12 +127,39 @@ async def on_message(message, amount=1):
             else:
                 word = elem[:-1]
             if config.MORPH.parse(word)[0].normal_form in config.haram:
+                author = message.author
                 await message.channel.purge(limit=amount)
-                await message.channel.sendMessage('Пожалуйста, выражайтесь корректно)')
-                break
+                await message.channel.send('Пожалуйста, выражайтесь корректно)')
+                if author not in slaves.keys():
+                    slaves[author] = 1
+                    await message.channel.sendMessage(f'{author.mention}, у тебя 1 просчет, грядет бан!')
+                    break
+                else:
+                    if slaves[author] == 1:
+                        slaves[author] = 2
+                        await message.channel.sendMessage(f'{author.mention}, еще раз, и получишь бан!')
+                        break
+                    elif slaves[author] == 2:
+                        slaves[author] = 3
+                        await message.channel.sendMessage(f'{author.mention}, take it, boy!')
+                        break
             elif word in config.haram:
+                author = message.author
                 await message.channel.purge(limit=amount)
-                await message.channel.sendMessage('Пожалуйста, выражайтесь корректно)')
+                await message.channel.send('Пожалуйста, выражайтесь корректно)')
+                if author not in slaves.keys():
+                    slaves[author] = 1
+                    await message.channel.sendMessage(f'{author.mention}, у тебя 1 просчет, грядет бан!')
+                    break
+                else:
+                    if slaves[author] == 1:
+                        slaves[author] = 2
+                        await message.channel.sendMessage(f'{author.mention}, еще раз, и получишь бан!')
+                        break
+                    elif slaves[author] == 2:
+                        slaves[author] = 3
+                        await message.channel.sendMessage(f'{author.mention}, take it, boy!')
+                        break
                 break
             elif word in config.hello_world:
                 await message.channel.sendMessage('Бонжюр! Что-то интересует?')
