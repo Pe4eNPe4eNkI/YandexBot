@@ -11,7 +11,7 @@ import asyncio
 import bs4
 from bs4 import BeautifulSoup
 import pymorphy2
-# from translate import Translator
+from translate import Translator
 import sqlite3 as sql
 
 client = commands.Bot(command_prefix='.')
@@ -129,43 +129,27 @@ async def on_message(message):
                 word = elem[:-1]
             if config.MORPH.parse(word)[0].normal_form in config.haram:
                 author = message.author
-                await message.channel.purge(limit=amount)
-                await message.channel.send('Пожалуйста, выражайтесь корректно)')
                 if author not in config.slaves.keys():
                     config.slaves[author] = 1
+                    await message.channel.purge(limit=amount)
+                    await message.channel.send('Пожалуйста, выражайтесь корректно)')
                     await message.channel.send(
                         f'{author.mention}, у тебя 1 просчет, грядет бан!')
                     break
                 else:
                     if config.slaves[author] == 1:
                         config.slaves[author] = 2
+                        await message.channel.purge(limit=amount)
+                        await message.channel.send('Пожалуйста, выражайтесь корректно)')
                         await message.channel.send(
                             f'{author.mention}, еще раз, и получишь бан!')
                         break
                     elif config.slaves[author] == 2:
                         config.slaves[author] = 3
+                        await message.channel.purge(limit=amount)
+                        await message.channel.send('Пожалуйста, выражайтесь корректно)')
                         await message.channel.send(f'{author.mention}, take it, boy!')
                         break
-            elif word in config.haram:
-                author = message.author
-                await message.channel.purge(limit=amount)
-                await message.channel.send('Пожалуйста, выражайтесь корректно)')
-                if author not in config.slaves.keys():
-                    config.slaves[author] = 1
-                    await message.channel.send(
-                        f'{author.mention}, у тебя 1 просчет, грядет бан!')
-                    break
-                else:
-                    if config.slaves[author] == 1:
-                        config.slaves[author] = 2
-                        await message.channel.send(
-                            f'{author.mention}, еще раз, и получишь бан!')
-                        break
-                    elif config.slaves[author] == 2:
-                        config.slaves[author] = 3
-                        await message.channel.send(f'{author.mention}, take it, boy!')
-                        break
-                break
             elif word in config.hello_world:
                 await message.channel.send('Бонжур! Что-то интересует?')
                 break
@@ -190,20 +174,20 @@ async def hello(ctx):
 
 
 # translate
-# @client.command(pass_context=True)
-# async def translate(ctx, language_1, language_2, *text):
-#    translator = Translator(from_lang=language_1, to_lang=language_2)
-#    answer = []
-#    for elem in text:
-#        if elem[-1].isalpha():
-#            word = elem
-#            translation = translator.translate(word)
-#            answer.append(translation)
-#        else:
-#            word = elem[:-1]
-#            translation = translator.translate(word)
-#            answer.append(translation + elem[-1])
-#    await ctx.channel.send(" ".join(answer))
+@client.command(pass_context=True)
+async def translate(ctx, language_1, language_2, *text):
+    translator = Translator(from_lang=language_1, to_lang=language_2)
+    answer = []
+    for elem in text:
+        if elem[-1].isalpha():
+            word = elem
+            translation = translator.translate(word)
+            answer.append(translation)
+        else:
+            word = elem[:-1]
+            translation = translator.translate(word)
+            answer.append(translation + elem[-1])
+    await ctx.channel.send(" ".join(answer))
 
 
 # auto role
@@ -216,19 +200,7 @@ async def hello(ctx):
 #    await channel.send(
 #        embed=discord.Embed(discription=f'Пользователь ''{member.name}'' присоединился к серверу!',
 #                            color=0x0c0c0c))
-#
-# @client.event
-# async def on_member_join(member):
-#    role_1 = member.guild.get_role(747884164606459965)
-#    await member.add_roles(role_1)
-#
-#
-# @client.command()
-# async def test(ctx):
-#    member = ctx.message.author
-#    role_1 = member.guild.get_role(832946932237991951)
-#    await member.add_roles(role_1)
-#
+
 # ban
 @client.command(pass_context=True)
 @commands.has_permissions(administrator=True)
@@ -412,9 +384,9 @@ async def weather(ctx, city):
     yandex = requests.get('https://yandex.ru/pogoda/' + city)  # тут получаем
     # страницу с нужным нам городом
     yan1 = bs4.BeautifulSoup(yandex.text, 'html.parser')
-    #wie = yan1.find('div', class_='link__feelings fact__feelings').text
+    # wie = yan1.find('div', class_='link__feelings fact__feelings').text
     # в этомм классе содержится нужная нам информация
-    #f = wie.split('Ощущается как')
+    # f = wie.split('Ощущается как')
     yand2 = requests.get('https://yandex.ru/pogoda/' + city)
     # находим страничку для нужного города
     yande2 = bs4.BeautifulSoup(yand2.text, 'html.parser')
@@ -424,15 +396,15 @@ async def weather(ctx, city):
     yandex_two_2 = requests.get('https://yandex.ru/pogoda/' + city)
     yan_two_2 = bs4.BeautifulSoup(yandex_two_2.text, 'html.parser')
     wie_two_2 = str(yan_two_2.find('div',
-                               class_="term term_orient_v fact__wind-speed"))
+                                   class_="term term_orient_v fact__wind-speed"))
     # ищам информацию о скорости ветра
     humidity_two_2 = str(yan_two_2.find('div',
-                                    class_="term term_orient_v fact__humidity"))
+                                        class_="term term_orient_v fact__humidity"))
     # ищем информацию о влажности
     f_two_2 = humidity_two_2.split('Влажность')
     s = "Влажность: " + f_two_2[0]
     w = "Ветер: " + wie_two_2
-    #await ctx.send(f[0])  # выводим наше "состояние погоды"
+    # await ctx.send(f[0])  # выводим наше "состояние погоды"
     await ctx.send(s)  # выводим
     await ctx.send(w)  # выводим
 
