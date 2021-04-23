@@ -135,20 +135,39 @@ async def on_message(message):
                     await message.channel.send('Пожалуйста, выражайтесь корректно)')
                     await message.channel.send(
                         f'{author.mention}, у тебя 1 просчет, грядет бан!')
+                    print(config.slaves)
                     break
                 else:
-                    if config.slaves[author] == 1:
+                    if config.slaves[author] == 0:
+                        config.slaves[author] = 1
+                        await message.channel.purge(limit=amount)
+                        await message.channel.send('Пожалуйста, выражайтесь корректно)')
+                        await message.channel.send(
+                            f'{author.mention}, у тебя 1 просчет, грядет бан!')
+                        print(config.slaves)
+                        break
+                    elif config.slaves[author] == 1:
                         config.slaves[author] = 2
                         await message.channel.purge(limit=amount)
                         await message.channel.send('Пожалуйста, выражайтесь корректно)')
                         await message.channel.send(
                             f'{author.mention}, еще раз, и получишь бан!')
+                        print(config.slaves)
                         break
                     elif config.slaves[author] == 2:
                         config.slaves[author] = 3
                         await message.channel.purge(limit=amount)
                         await message.channel.send('Пожалуйста, выражайтесь корректно)')
                         await message.channel.send(f'{author.mention}, take it, boy!')
+                        print(config.slaves)
+                        # ban
+                        emb = discord.Embed(title='Ban', color=discord.Color.red())
+                        await author.ban(reason=None)
+                        emb.set_author(name=author.name)
+                        emb.add_field(name='Ban user',
+                                      value='Banned user: {}'.format(author.mention))
+                        emb.set_footer(text='Был забанен за нецензурную лексику')
+                        await message.channel.send(embed=emb)
                         break
             elif word in config.hello_world:
                 await message.channel.send('Бонжур! Что-то интересует?')
@@ -216,17 +235,17 @@ async def ban(ctx, member: discord.Member, *, reason=None):
 
 
 # unban
-@client.command(pass_context=True)
-@commands.has_permissions(administrator=True)
-async def unban(ctx, member: discord.Member, *, reason=None):
-    emb = discord.Embed(title='Unban', color=discord.Color.green())
-    await member.unban(reason=reason)
-    emb.set_author(name=member.name)
-    emb.add_field(name='Unban user',
-                  value='Unbanned user: {}'.format(member.mention))
-    emb.set_footer(
-        text='Был разбанен администратором {}'.format(ctx.author.name))
-    await ctx.send(embed=emb)
+@client.command()
+async def unbanx(ctx, *, member):
+    banned_users = await ctx.guild.bans()
+
+    member_name, member_discriminator = member.split('#')
+    for ban_entry in banned_users:
+        user = ban_entry.user
+
+        if (user.name, user.discriminator) != (member_name, member_discriminator):
+            config.slaves[user] = 0
+            await ctx.guild.unban(user)
 
 
 # kick
@@ -464,7 +483,7 @@ async def help(ctx):
     emb.add_field(name='{}clear (n)'.format('.'), value='Очистка чата')
     emb.add_field(name='{}kick (member)'.format('.'), value='кик участника')
     emb.add_field(name='{}ban (member)'.format('.'), value='бан участника')
-    emb.add_field(name='{}unban (member)'.format('.'), value='разбан участника')
+    emb.add_field(name='{}unbanx (member)'.format('.'), value='разбан участника')
     emb.add_field(name='{}join'.format('.'),
                   value='подключение бота к голосовому каналу')
     emb.add_field(name='{}leave'.format('.'),
