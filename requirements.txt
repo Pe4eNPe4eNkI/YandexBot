@@ -1,0 +1,9 @@
+discord
+config
+requests
+pyowm
+asyncio
+bs4
+pymorphy2
+translate
+os
