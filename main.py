@@ -130,6 +130,8 @@ async def on_message(message):
                 word = elem[:-1]
             if config.MORPH.parse(word)[0].normal_form in config.haram:
                 author = message.author
+                if author.guild_permissions.administrator:
+                    await message.channel.send('Я не баню своего mastera за мат)')
                 if author not in config.slaves.keys():
                     config.slaves[author] = 1
                     await message.channel.purge(limit=amount)
@@ -238,13 +240,13 @@ async def ban(ctx, member: discord.Member, *, reason=None):
 
 
 # unban
+@commands.has_permissions(administrator=True)
 @client.command(pass_context=True)
 async def unban(ctx, names):
     banned_users = await ctx.guild.bans()
     member_name, member_discriminator = names.split('#')
     member_a = '@' + names
     print(member_a)
-
     emb = discord.Embed(title='Unban', color=discord.Color.green())
     emb.add_field(name='Unban user',
                   value='Unbanned user: {}'.format(member_name))
@@ -255,6 +257,7 @@ async def unban(ctx, names):
 
     for ban_entry in banned_users:
         user = ban_entry.user
+        config.slaves[user] = 0
         if (user.name, user.discriminator) != (member_name, member_discriminator):
             await ctx.guild.unban(user)
 
@@ -335,7 +338,7 @@ async def euro(ctx):
 @client.command(pass_context=True)
 async def frank(ctx):
     embed = discord.Embed(title="Frank:",
-                          description=f'Курс евро в рублях: {get_currency_price("frank")[0]}',
+                          description=f'Курс франка в рублях: {get_currency_price("frank")[0]}',
                           colour=discord.Colour.dark_gold())
     embed.set_thumbnail(
         url="https://s3.amazonaws.com/static.graphemica.com/glyphs/i500s/000/012/491/original/20A3-500x500.png?1275331266")
@@ -459,6 +462,7 @@ async def create_role(ctx, *text):
 
 
 # mute
+@commands.has_permissions(administrator=True)
 @client.command(description="Mutes the specified user.")
 @commands.has_permissions(manage_messages=True)
 async def mute(ctx, member: discord.Member, *, reason=None):
@@ -483,6 +487,7 @@ async def mute(ctx, member: discord.Member, *, reason=None):
 
 
 # unmute
+@commands.has_permissions(administrator=True)
 @client.command(description="Unmutes a specified user.")
 @commands.has_permissions(manage_messages=True)
 async def unmute(ctx, member: discord.Member):
