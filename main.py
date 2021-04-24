@@ -1,3 +1,4 @@
+# Импорт библиотек
 import translate
 import discord
 from discord import utils
@@ -19,7 +20,7 @@ client = commands.Bot(command_prefix='.')
 client.remove_command('help')
 
 
-# ready
+# Подключение бота к каналу
 @client.event
 async def on_ready():
     print('Connected')
@@ -27,7 +28,7 @@ async def on_ready():
                                  activity=discord.Game('Yandex.Lyceum | .help'))
 
 
-# reaction_add
+# Реакции бота на смайлики
 @client.event
 async def on_raw_reaction_add(payload):
     if payload.message_id == config.POST_ID:
@@ -52,7 +53,7 @@ async def on_raw_reaction_add(payload):
             print(repr(e))
 
 
-# reaction_remove
+# Удаление ролей
 @client.event
 async def on_raw_reaction_remove(payload):
     channel = client.get_channel(payload.channel_id)
@@ -70,7 +71,7 @@ async def on_raw_reaction_remove(payload):
         print(repr(e))
 
 
-# money
+# Вывод данных о валюте
 def get_currency_price(name):
     if name == "dollar":
         response_letter = []
@@ -93,6 +94,7 @@ def get_currency_price(name):
     return response_letter
 
 
+# Калькулятор валют
 def get_currency_price_translate(number_1, alpha, beta):
     if alpha != "rub" and beta == "rub":  # Если одна из выбраных валют - рубль
         # Нахождение актуальной информации о валюте
@@ -116,7 +118,7 @@ def get_currency_price_translate(number_1, alpha, beta):
         return answer  # Запись ответа
 
 
-# message
+# Реакции на слова в сообщениях
 @client.event
 @commands.has_permissions(administrator=True)
 async def on_message(message):
@@ -124,10 +126,11 @@ async def on_message(message):
     msg = message.content.lower()
     if msg[0] != '.':
         for elem in msg.split(" "):
-            if elem[-1].isalpha():  # ломается на моменте цикла, мб есть смысл поменять значение
+            if elem[-1].isalpha():
                 word = elem
             else:
                 word = elem[:-1]
+            # Выявление нецензурной брани
             if config.MORPH.parse(word)[0].normal_form in config.haram:
                 author = message.author
                 if author.guild_permissions.administrator:
@@ -172,22 +175,18 @@ async def on_message(message):
                         emb.set_footer(text='Был забанен за нецензурную лексику')
                         await message.channel.send(embed=emb)
                         break
+            # Приветствие
             elif word in config.hello_world:
                 await message.channel.send('Бонжур! Что-то интересует?')
                 break
             elif word in config.antword:
                 await message.channel.send('Напиши .help в чат для просмотра списка команд')
                 break
-            # elif "ты" == elem:
-            #    await message.channel.send('ты Слава Мерлоу?')
-            #    await message.channel.send(file=discord.File('ti.jpg'))
-            #    break
-
     else:
         await client.process_commands(message)
 
 
-# hello
+# Приветствие по команде
 @client.command(pass_context=True)
 async def hello(ctx):
     author = ctx.message.author
@@ -195,7 +194,7 @@ async def hello(ctx):
         f'{author.mention}, приветствую, но не на немецком! | {author.mention}, привет! как дела?')
 
 
-# translate
+# Переводчик на другой язык
 @client.command(pass_context=True)
 async def translate(ctx, language_1, language_2, *text):
     translator = Translator(from_lang=language_1, to_lang=language_2)
@@ -212,18 +211,7 @@ async def translate(ctx, language_1, language_2, *text):
     await ctx.channel.send(" ".join(answer))
 
 
-# auto role
-# @client.event
-# async def on_member_join(member):
-#    channel = client.get_channel(748059364555751475)
-#    role = discord.utils.get(member.guild.roles, id=689430828089868292)
-#
-#    await member.add_roles(role)
-#    await channel.send(
-#        embed=discord.Embed(discription=f'Пользователь ''{member.name}'' присоединился к серверу!',
-#                            color=0x0c0c0c))
-
-# ban
+# Бан
 @client.command(pass_context=True)
 @commands.has_permissions(administrator=True)
 async def ban(ctx, member: discord.Member, *, reason=None):
@@ -239,7 +227,7 @@ async def ban(ctx, member: discord.Member, *, reason=None):
     await ctx.send(embed=emb)
 
 
-# unban
+# Вывод из бана
 @client.command(pass_context=True)
 async def unban(ctx, names):
     banned_users = await ctx.guild.bans()
@@ -261,7 +249,7 @@ async def unban(ctx, names):
             await ctx.guild.unban(user)
 
 
-# kick
+# Кик с сервера
 @client.command(pass_context=True)
 @commands.has_permissions(administrator=True)
 async def kick(ctx, member: discord.Member, *, reason=None):
@@ -277,14 +265,14 @@ async def kick(ctx, member: discord.Member, *, reason=None):
     await ctx.send(embed=emb)
 
 
-# clear
+# Удаление сообщений
 @client.command(pass_context=True)
 @commands.has_permissions(administrator=True)
 async def clear(ctx, amount=100):
     await ctx.channel.purge(limit=amount)
 
 
-# join voice
+# Вступление в голосовой чат
 @client.command()
 async def join(ctx):
     global voice
@@ -297,7 +285,7 @@ async def join(ctx):
         await ctx.send(f'Бот присоединился к  {channel}')
 
 
-# leave voice
+# Выход из голосового чата
 @client.command()
 async def leave(ctx):
     channel = ctx.message.author.voice.channel
@@ -310,7 +298,7 @@ async def leave(ctx):
         await voice.disconnect()
 
 
-# dollar
+# Курс доллара
 @client.command(pass_context=True)
 async def dollar(ctx):
     embed = discord.Embed(title="Dollar:",
@@ -322,7 +310,7 @@ async def dollar(ctx):
     await ctx.send(embed=embed)
 
 
-# euro
+# Курс евро
 @client.command(pass_context=True)
 async def euro(ctx):
     embed = discord.Embed(title="Euro:",
@@ -333,7 +321,7 @@ async def euro(ctx):
     await ctx.send(embed=embed)
 
 
-# frank
+# Курс франка
 @client.command(pass_context=True)
 async def frank(ctx):
     embed = discord.Embed(title="Frank:",
@@ -345,7 +333,7 @@ async def frank(ctx):
     await ctx.send(embed=embed)
 
 
-# translate
+# Переводчик одной валюты в другую
 @client.command(pass_context=True)
 async def translate_money(ctx, number_1, alpha, beta):
     embed = discord.Embed(title="Translate Money:",
@@ -356,7 +344,7 @@ async def translate_money(ctx, number_1, alpha, beta):
     await ctx.send(embed=embed)
 
 
-# weather 5 day
+# Погода на 5 дней
 @client.command(pass_context=True)
 async def weather_n(ctx, pred_city):
     try:
@@ -414,7 +402,7 @@ async def weather_n(ctx, pred_city):
     await ctx.send(embed=embed)
 
 
-# weather one day
+# Подробная погода на день
 @client.command(pass_context=True)
 async def weather(ctx, *, city: str):
     city_name = city
@@ -447,7 +435,7 @@ async def weather(ctx, *, city: str):
         await channel.send("Город не найден.")
 
 
-# create_role
+# Создание роли
 @client.command(pass_context=True)
 async def create_role(ctx, *text):
     guild = ctx.guild
@@ -460,7 +448,7 @@ async def create_role(ctx, *text):
     await ctx.send(embed=embed)
 
 
-# mute
+# Отправка человека в мут
 @client.command(description="Mutes the specified user.")
 @commands.has_permissions(manage_messages=True)
 async def mute(ctx, member: discord.Member, *, reason=None):
@@ -484,7 +472,7 @@ async def mute(ctx, member: discord.Member, *, reason=None):
     await member.send(f" you have been muted from: {guild.name} reason: {reason}")
 
 
-# unmute
+# Вывод человека из мута
 @client.command(description="Unmutes a specified user.")
 @commands.has_permissions(manage_messages=True)
 async def unmute(ctx, member: discord.Member):
@@ -499,7 +487,7 @@ async def unmute(ctx, member: discord.Member):
     await ctx.send(embed=embed)
 
 
-# help
+# Вызов подсказки
 @client.command(pass_context=True)
 @commands.has_permissions(administrator=True)
 async def help(ctx):
@@ -531,7 +519,7 @@ async def help(ctx):
 
     await ctx.send(embed=emb)
 
-
+# Получение токена с Heroku
 token = os.environ.get("BOT_TOKEN")
-
+# Запуск программы
 client.run(str(token))
