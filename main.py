@@ -258,8 +258,6 @@ async def unban(ctx, names):
             await ctx.guild.unban(user)
 
 
-
-
 # kick
 @client.command(pass_context=True)
 @commands.has_permissions(administrator=True)
@@ -315,7 +313,8 @@ async def dollar(ctx):
     embed = discord.Embed(title="Dollar:",
                           description=f'Курс доллара в рублях: {get_currency_price("dollar")[0]}',
                           colour=discord.Colour.dark_gold())
-    embed.set_thumbnail(url="https://www.publicdomainpictures.net/pictures/40000/velka/dollar-sign-black.jpg")
+    embed.set_thumbnail(
+        url="https://www.publicdomainpictures.net/pictures/40000/velka/dollar-sign-black.jpg")
 
     await ctx.send(embed=embed)
 
@@ -337,7 +336,8 @@ async def frank(ctx):
     embed = discord.Embed(title="Frank:",
                           description=f'Курс евро в рублях: {get_currency_price("frank")[0]}',
                           colour=discord.Colour.dark_gold())
-    embed.set_thumbnail(url="https://s3.amazonaws.com/static.graphemica.com/glyphs/i500s/000/012/491/original/20A3-500x500.png?1275331266")
+    embed.set_thumbnail(
+        url="https://s3.amazonaws.com/static.graphemica.com/glyphs/i500s/000/012/491/original/20A3-500x500.png?1275331266")
 
     await ctx.send(embed=embed)
 
@@ -348,13 +348,14 @@ async def translate_money(ctx, number_1, alpha, beta):
     embed = discord.Embed(title="Translate Money:",
                           description=f'{number_1} в {alpha} = {get_currency_price_translate(number_1, alpha, beta)} в {beta}',
                           colour=discord.Colour.dark_green())
-    embed.set_thumbnail(url="https://lh3.googleusercontent.com/ViS41J5SwDI91ZFNb5BX5fMmWqpdNp8qp6t8imv23OEF6mQomDhXcHL_Pg_cvpkXkhbJ")
+    embed.set_thumbnail(
+        url="https://lh3.googleusercontent.com/ViS41J5SwDI91ZFNb5BX5fMmWqpdNp8qp6t8imv23OEF6mQomDhXcHL_Pg_cvpkXkhbJ")
     await ctx.send(embed=embed)
 
 
 # weather 5 day
 @client.command(pass_context=True)
-async def weathers(ctx, pred_city):
+async def weather_n(ctx, pred_city):
     try:
         res1 = requests.get("http://api.openweathermap.org/data/2.5/find",
                             params={'q': pred_city, 'type': 'like',
@@ -406,6 +407,7 @@ async def weathers(ctx, pred_city):
     embed = discord.Embed(title=f"Прогноз погоды в {pred_city} на 5 дней:",
                           description=f"{b1}\n{b2}\n{b3}\n{b4}\n{b5}\n",
                           colour=discord.Colour.dark_purple())
+    embed.set_thumbnail(url="https://i.ibb.co/CMrsxdX/weather.png")
     await ctx.send(embed=embed)
 
 
@@ -450,6 +452,8 @@ async def create_role(ctx, *text):
     await guild.create_role(name=text)
     embed = discord.Embed(title="Role: ", description=f"Роль {text} успешно создана :)",
                           colour=discord.Colour.blue())
+    embed.set_thumbnail(
+        url="https://www.pikpng.com/pngl/b/443-4431813_png-file-svg-roles-icon-transparent-clipart.png")
     await ctx.send(embed=embed)
 
 
@@ -470,6 +474,7 @@ async def mute(ctx, member: discord.Member, *, reason=None):
     embed = discord.Embed(title="Muted", description=f"{member.mention} был добавлен в мьют",
                           colour=discord.Colour.magenta())
     embed.add_field(name="Причина:", value=reason, inline=False)
+    embed.set_thumbnail(url="https://www.pngkey.com/png/detail/215-2154601_mute-unmute-mute-unmute-icon-png.png")
     await ctx.send(embed=embed)
     await member.add_roles(mutedRole, reason=reason)
     await member.send(f" you have been muted from: {guild.name} reason: {reason}")
@@ -485,6 +490,8 @@ async def unmute(ctx, member: discord.Member):
     await member.send(f" you have unmutedd from: - {ctx.guild.name}")
     embed = discord.Embed(title="Unmute", description=f"{member.mention} больше не в мьюте",
                           colour=discord.Colour.gold())
+    embed.set_thumbnail(
+        url="https://cdn0.iconfinder.com/data/icons/prohibition/100/prohibition_prohibited_prohibit-10-512.png")
     await ctx.send(embed=embed)
 
 
@@ -497,7 +504,7 @@ async def help(ctx):
     emb.add_field(name='{}clear (n)'.format('.'), value='Очистка чата')
     emb.add_field(name='{}kick (member)'.format('.'), value='кик участника')
     emb.add_field(name='{}ban (member)'.format('.'), value='бан участника')
-    emb.add_field(name='{}unbanx (member)'.format('.'), value='разбан участника')
+    emb.add_field(name='{}unban (member#discriminator)'.format('.'), value='разбан участника')
     emb.add_field(name='{}join'.format('.'),
                   value='подключение бота к голосовому каналу')
     emb.add_field(name='{}leave'.format('.'),
@@ -509,7 +516,7 @@ async def help(ctx):
     emb.add_field(name='{}frank'.format('.'), value='Курс франка')
     emb.add_field(name='{}mute (member)'.format('.'), value='Мьют участника')
     emb.add_field(name='{}unmute (member)'.format('.'), value='Размьют участника')
-    emb.add_field(name='{}weathers (city)'.format('.'), value='Прогноз погоды на 5 дней')
+    emb.add_field(name='{}weather_n (city)'.format('.'), value='Прогноз погоды на 5 дней')
     emb.add_field(name='{}weather (city)'.format('.'), value='Прогноз погоды')
     emb.add_field(
         name='{}translate_money (quantity, first_currency, second_currency)'.format('.'),
