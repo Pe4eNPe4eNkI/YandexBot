@@ -6,4 +6,3 @@ asyncio
 bs4
 pymorphy2
 translate
-os
