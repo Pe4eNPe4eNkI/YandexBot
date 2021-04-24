@@ -182,6 +182,10 @@ async def on_message(message):
             elif word in config.antword:
                 await message.channel.send('Напиши .help в чат для просмотра списка команд')
                 break
+            elif "ты" == elem:
+                await message.channel.send('ты Слава Мерлоу?')
+                await message.channel.send(file=discord.File('ti.jpg'))
+                break
     else:
         await client.process_commands(message)
 
