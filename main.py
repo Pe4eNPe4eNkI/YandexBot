@@ -475,7 +475,8 @@ async def mute(ctx, member: discord.Member, *, reason=None):
     embed = discord.Embed(title="Muted", description=f"{member.mention} был добавлен в мьют",
                           colour=discord.Colour.magenta())
     embed.add_field(name="Причина:", value=reason, inline=False)
-    embed.set_thumbnail(url="https://www.pngkey.com/png/detail/215-2154601_mute-unmute-mute-unmute-icon-png.png")
+    embed.set_thumbnail(
+        url="https://www.pngkey.com/png/detail/215-2154601_mute-unmute-mute-unmute-icon-png.png")
     await ctx.send(embed=embed)
     await member.add_roles(mutedRole, reason=reason)
     await member.send(f" you have been muted from: {guild.name} reason: {reason}")
@@ -529,5 +530,6 @@ async def help(ctx):
     await ctx.send(embed=emb)
 
 
-# client.run(config.TOKEN)
 token = os.environ.get("BOT_TOKEN")
+
+client.run(str(token))
