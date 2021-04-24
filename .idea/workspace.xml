@@ -4,7 +4,6 @@
     <list default="true" id="e7f85aa1-102b-4fa0-88a7-d4afa3d3a6ee" name="Default Changelist" comment="Перенес словарь в config">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -290,7 +289,21 @@
       <option name="project" value="LOCAL" />
       <updated>1619277368206</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="help update + new img">
+      <created>1619278153431</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1619278153431</updated>
+    </task>
+    <task id="LOCAL-00019" summary=" new help img">
+      <created>1619278288826</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1619278288826</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -338,6 +351,8 @@
     <MESSAGE value="Фикс неких багов" />
     <MESSAGE value="fix weather, unban + new img" />
     <MESSAGE value="token" />
-    <option name="LAST_COMMIT_MESSAGE" value="token" />
+    <MESSAGE value="help update + new img" />
+    <MESSAGE value=" new help img" />
+    <option name="LAST_COMMIT_MESSAGE" value=" new help img" />
   </component>
 </project>
