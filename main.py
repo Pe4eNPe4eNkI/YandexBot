@@ -229,23 +229,35 @@ async def ban(ctx, member: discord.Member, *, reason=None):
     emb.set_author(name=member.name)
     emb.add_field(name='Ban user',
                   value='Banned user: {}'.format(member.mention))
+    emb.set_thumbnail(url="https://i.ytimg.com/vi/MTh5nRh8cHc/maxresdefault.jpg")
+
     emb.set_footer(
         text='Был забанен администратором {}'.format(ctx.author.name))
     await ctx.send(embed=emb)
 
 
 # unban
-@client.command()
-async def unbanx(ctx, *, member):
+@client.command(pass_context=True)
+async def unban(ctx, names):
     banned_users = await ctx.guild.bans()
+    member_name, member_discriminator = names.split('#')
+    member_a = '@' + names
+    print(member_a)
 
-    member_name, member_discriminator = member.split('#')
+    emb = discord.Embed(title='Unban', color=discord.Color.green())
+    emb.add_field(name='Unban user',
+                  value='Unbanned user: {}'.format(member_name))
+    emb.set_thumbnail(url="https://i.ytimg.com/vi/Dfjnztl-R0Q/maxresdefault.jpg")
+    emb.set_footer(
+        text='Был разбанен администратором {}'.format(ctx.author.name))
+    await ctx.send(embed=emb)
+
     for ban_entry in banned_users:
         user = ban_entry.user
-
         if (user.name, user.discriminator) != (member_name, member_discriminator):
-            config.slaves[user] = 0
             await ctx.guild.unban(user)
+
+
 
 
 # kick
@@ -258,6 +270,8 @@ async def kick(ctx, member: discord.Member, *, reason=None):
     emb.set_author(name=member.name)
     emb.add_field(name='Kick user',
                   value='Kicked user: {}'.format(member.mention))
+    emb.set_thumbnail(
+        url="https://www.pngkit.com/png/detail/369-3694735_this-is-an-image-of-a-person-kicking.png")
     emb.set_footer(text='Был кикнут администратором{}'.format(ctx.author.name))
     await ctx.send(embed=emb)
 
@@ -301,6 +315,8 @@ async def dollar(ctx):
     embed = discord.Embed(title="Dollar:",
                           description=f'Курс доллара в рублях: {get_currency_price("dollar")[0]}',
                           colour=discord.Colour.dark_gold())
+    embed.set_thumbnail(url="https://www.publicdomainpictures.net/pictures/40000/velka/dollar-sign-black.jpg")
+
     await ctx.send(embed=embed)
 
 
@@ -310,6 +326,8 @@ async def euro(ctx):
     embed = discord.Embed(title="Euro:",
                           description=f'Курс евро в рублях: {get_currency_price("euro")[0]}',
                           colour=discord.Colour.dark_gold())
+    embed.set_thumbnail(url="https://cdn.pixabay.com/photo/2014/09/19/13/10/euro-452467_1280.jpg")
+
     await ctx.send(embed=embed)
 
 
@@ -319,6 +337,8 @@ async def frank(ctx):
     embed = discord.Embed(title="Frank:",
                           description=f'Курс евро в рублях: {get_currency_price("frank")[0]}',
                           colour=discord.Colour.dark_gold())
+    embed.set_thumbnail(url="https://s3.amazonaws.com/static.graphemica.com/glyphs/i500s/000/012/491/original/20A3-500x500.png?1275331266")
+
     await ctx.send(embed=embed)
 
 
@@ -328,6 +348,7 @@ async def translate_money(ctx, number_1, alpha, beta):
     embed = discord.Embed(title="Translate Money:",
                           description=f'{number_1} в {alpha} = {get_currency_price_translate(number_1, alpha, beta)} в {beta}',
                           colour=discord.Colour.dark_green())
+    embed.set_thumbnail(url="https://lh3.googleusercontent.com/ViS41J5SwDI91ZFNb5BX5fMmWqpdNp8qp6t8imv23OEF6mQomDhXcHL_Pg_cvpkXkhbJ")
     await ctx.send(embed=embed)
 
 
@@ -390,42 +411,35 @@ async def weathers(ctx, pred_city):
 
 # weather one day
 @client.command(pass_context=True)
-async def weather(ctx, city):
-    try:
-        mgr = config.owm.weather_manager()
-        observation = mgr.weather_at_place(city)  # тут ищем саму температуру
-        w = observation.weather
-        temp = w.temperature('celsius')['temp']
-        await ctx.send(f'Температура: {temp}°C')  # вот сама функция по выводу
-        # погоды в городе
-    except ValueError:
-        pass
-    yandex = requests.get('https://yandex.ru/pogoda/' + city)  # тут получаем
-    # страницу с нужным нам городом
-    yan1 = bs4.BeautifulSoup(yandex.text, 'html.parser')
-    # wie = yan1.find('div', class_='link__feelings fact__feelings').text
-    # в этомм классе содержится нужная нам информация
-    # f = wie.split('Ощущается как')
-    yand2 = requests.get('https://yandex.ru/pogoda/' + city)
-    # находим страничку для нужного города
-    yande2 = bs4.BeautifulSoup(yand2.text, 'html.parser')
-    ya2 = str(yande2.find('span', "temp__value"))
-    # ищем в коде страницы информацию о погоде
-    f_one_21 = ya2.split('Текущая температура')
-    yandex_two_2 = requests.get('https://yandex.ru/pogoda/' + city)
-    yan_two_2 = bs4.BeautifulSoup(yandex_two_2.text, 'html.parser')
-    wie_two_2 = str(yan_two_2.find('div',
-                                   class_="term term_orient_v fact__wind-speed"))
-    # ищам информацию о скорости ветра
-    humidity_two_2 = str(yan_two_2.find('div',
-                                        class_="term term_orient_v fact__humidity"))
-    # ищем информацию о влажности
-    f_two_2 = humidity_two_2.split('Влажность')
-    s = "Влажность: " + f_two_2[0]
-    w = "Ветер: " + wie_two_2
-    # await ctx.send(f[0])  # выводим наше "состояние погоды"
-    await ctx.send(s)  # выводим
-    await ctx.send(w)  # выводим
+async def weather(ctx, *, city: str):
+    city_name = city
+    complete_url = config.base_url + "appid=" + config.appid + "&q=" + city_name
+    response = requests.get(complete_url)
+    x = response.json()
+    channel = ctx.message.channel
+    if x["cod"] != "404":
+        async with channel.typing():
+            y = x["main"]
+            current_temperature = y["temp"]
+            current_temperature_celsiuis = str(round(current_temperature - 273.15))
+            current_pressure = y["pressure"]
+            current_humidity = y["humidity"]
+            z = x["weather"]
+            weather_description = z[0]["description"]
+            embed = discord.Embed(title=f"Погода в {city_name}",
+                                  color=ctx.guild.me.top_role.color,
+                                  timestamp=ctx.message.created_at, )
+            embed.add_field(name="Описание", value=f"**{weather_description}**", inline=False)
+            embed.add_field(name="Температура(C)", value=f"**{current_temperature_celsiuis}°C**",
+                            inline=False)
+            embed.add_field(name="Влажность(%)", value=f"**{current_humidity}%**", inline=False)
+            embed.add_field(name="Атмосферное давление(hPa)", value=f"**{current_pressure}hPa**",
+                            inline=False)
+            embed.set_thumbnail(url="https://i.ibb.co/CMrsxdX/weather.png")
+            embed.set_footer(text=f"Запрошено {ctx.author.name}")
+            await channel.send(embed=embed)
+    else:
+        await channel.send("Город не найден.")
 
 
 # create_role

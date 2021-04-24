@@ -12,11 +12,13 @@ import bs4
 from bs4 import BeautifulSoup
 import pymorphy2
 
-TOKEN = '-'
+TOKEN = 'NzQ3NzczNjIzMzUxMTE1ODM2.X0TwdA.XIV9yxIihGf_oUMgSkandfQ0LwA'
 
 MORPH = pymorphy2.MorphAnalyzer()
 
 appid = "97150f95dc173b86e58b20c0754d2634"  # токен
+
+base_url = "http://api.openweathermap.org/data/2.5/weather?"
 
 owm = pyowm.OWM('97150f95dc173b86e58b20c0754d2634')  # это токен, который мы получаем
 
