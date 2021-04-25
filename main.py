@@ -519,7 +519,7 @@ async def help(ctx):
         value='Перевод одной валюты в другую')
     emb.add_field(name='{}translate (first language, second language, text)'.format('.'),
                   value='Перевод (исходный язык, новый язык, текст)')
-    emb.set_thumbnail(url="http://cdn.onlinewebfonts.com/svg/download_288775.png")
+    emb.set_thumbnail(url="https://psv4.userapi.com/c520036/u208096156/docs/d2/e51f8cf6c035/16c.png?extra=5oSt8tGehVe-5C8MCMN7Hs_UMmW9LphBY3c93tA9wSeyXYmgtTpgZqcirTfBDkM0aE8docG_yzlfFlk8K7TSVMyNDYGT-cKQ6zsNnfZG-kql1cxS3IINzM-RXJGc3xCx0JTJrW7qXBqYl2rE0NroYjk")
 
     await ctx.send(embed=emb)
 
