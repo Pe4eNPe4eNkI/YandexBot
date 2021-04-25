@@ -28,13 +28,16 @@ async def on_ready():
                                  activity=discord.Game('Yandex.Lyceum | .help'))
 
 
-# Реакции бота на смайлики
+# Выдача ролей
 @client.event
 async def on_raw_reaction_add(payload):
     if payload.message_id == config.POST_ID:
         channel = client.get_channel(payload.channel_id)
         message = await channel.fetch_message(payload.message_id)
         member = utils.get(message.guild.members, id=payload.user_id)
+        print(channel)
+        print(message)
+        print(member)
         try:
             emoji = str(payload.emoji)
             role = utils.get(message.guild.roles, id=config.ROLES[emoji])
@@ -51,6 +54,7 @@ async def on_raw_reaction_add(payload):
             print('[ERROR] KeyError, no role found for ' + emoji)
         except Exception as e:
             print(repr(e))
+            await channel.send('Вы должны зайти в голосовой чат этого канала, чтобы получить роль!')
 
 
 # Удаление ролей
@@ -69,6 +73,7 @@ async def on_raw_reaction_remove(payload):
         print('[ERROR] KeyError, no role found for ' + emoji)
     except Exception as e:
         print(repr(e))
+        await channel.send('Вы должны зайти в голосовой чат этого канала, чтобы удалить роль!')
 
 
 # Вывод данных о валюте
