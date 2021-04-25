@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e7f85aa1-102b-4fa0-88a7-d4afa3d3a6ee" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +37,7 @@
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.bot">
     <configuration name="bot" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -146,18 +145,18 @@
     </configuration>
     <list>
       <item itemvalue="Python.bot" />
-      <item itemvalue="Python.config" />
-      <item itemvalue="Python.core" />
-      <item itemvalue="Python.dff" />
       <item itemvalue="Python.main" />
+      <item itemvalue="Python.dff" />
+      <item itemvalue="Python.core" />
+      <item itemvalue="Python.config" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.bot" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.config" />
         <item itemvalue="Python.core" />
         <item itemvalue="Python.dff" />
-        <item itemvalue="Python.bot" />
       </list>
     </recent_temporary>
   </component>
@@ -331,7 +330,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619293723681</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Прекратил суету">
+      <created>1619362088507</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1619362088507</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -385,6 +391,7 @@
     <MESSAGE value="Пофиксил баг" />
     <MESSAGE value="Закомментировал код" />
     <MESSAGE value="Суетной эксперимент" />
-    <option name="LAST_COMMIT_MESSAGE" value="Суетной эксперимент" />
+    <MESSAGE value="Прекратил суету" />
+    <option name="LAST_COMMIT_MESSAGE" value="Прекратил суету" />
   </component>
 </project>
