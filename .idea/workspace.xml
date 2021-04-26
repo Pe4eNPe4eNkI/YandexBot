@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e7f85aa1-102b-4fa0-88a7-d4afa3d3a6ee" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,7 +19,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="7d5a58e102dece7d2c52475e8ba271da72655a7c" />
+        <entry key="$PROJECT_DIR$" value="f317f3da8b799b735db2bb2add56077aacafc57c" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -154,9 +153,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
-        <item itemvalue="Python.config" />
-        <item itemvalue="Python.core" />
         <item itemvalue="Python.dff" />
+        <item itemvalue="Python.core" />
+        <item itemvalue="Python.config" />
         <item itemvalue="Python.bot" />
       </list>
     </recent_temporary>
